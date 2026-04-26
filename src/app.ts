@@ -1,5 +1,4 @@
-import express, { type Request, type Response } from 'express';
-import mysql from 'mysql2/promise';
+import express, { type Request as req, type Response as res } from 'express';
 
 const app = express();
 app.use(express.json());
