@@ -20,5 +20,11 @@ export class ClubeRepository {
         const { rows } = await pool.query(query, values);
             return rows[0]; // Retorna apenas o objeto criado
         }
+
+    async findAll() {   
+        const query = `SELECT * FROM clubes;`;
+        const { rows } = await pool.query(query);
+        return rows; // Retorna a lista de clubes
+    }
         
 }

@@ -14,9 +14,10 @@ export class AtletaRepository {
     `;
 
     const values = [
+      data.id_atleta,
       data.nome, 
       data.cpf, 
-      data.data_nasc, 
+      data.data_nasc,
       data.status, 
       data.peso, 
       data.altura
