@@ -4,4 +4,6 @@ export interface Campeonato {
     formato?: string; 
     criterios_desempate?: string; 
     status?: string; 
+    modalidade: string;
+    categoria: string;
 }
