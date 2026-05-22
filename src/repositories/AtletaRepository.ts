@@ -1,7 +1,7 @@
 import { pool } from '../config/database.js'; // Conexão que configuramos
 
 export class AtletaRepository {
-  
+
   /**
    * Insere um novo atleta no banco (Baseado no seu DER)[cite: 2]
    */
@@ -14,13 +14,12 @@ export class AtletaRepository {
     `;
 
     const values = [
-      data.id_atleta,
-      data.nome, 
-      data.cpf, 
+      data.nome,
+      data.cpf,
       data.data_nasc,
-      data.status, 
-      data.peso, 
-      data.altura
+      data.status || 'ativo',
+      data.peso || null,
+      data.altura || null
     ];
 
     const { rows } = await pool.query(query, values);
@@ -43,5 +42,22 @@ export class AtletaRepository {
     const query = 'SELECT * FROM atletas WHERE id_atleta = $1;';
     const { rows } = await pool.query(query, [id]);
     return rows[0];
+  }
+
+  async update(id: number, data: any) {
+    const query = `
+    UPDATE atletas 
+    SET nome = $1, cpf = $2, data_nasc = $3, status = $4, peso = $5, altura = $6
+    WHERE id_atleta = $7 RETURNING *;
+  `;
+    const values = [data.nome, data.cpf, data.data_nasc, data.status || 'ativo', data.peso || null, data.altura || null, id];
+    const { rows } = await pool.query(query, values);
+    return rows[0];
+  }
+
+  async delete(id: number) {
+    const query = 'DELETE FROM atletas WHERE id_atleta = $1;';
+    await pool.query(query, [id]);
+    return true;
   }
 }

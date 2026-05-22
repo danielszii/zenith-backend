@@ -5,7 +5,7 @@ import { AtletaRepository } from '../repositories/AtletaRepository.js';
 const repository = new AtletaRepository();
 
 export class AtletaController {
-  
+
   /**
    * Método para criar um novo registro (POST)
    */
@@ -21,12 +21,12 @@ export class AtletaController {
 
       // 3. Retorna o status 201 (Created) e o objeto criado
       return res.status(201).json(novoAtleta);
-      
+
     } catch (error: any) {
       // 4. Tratamento de erro básico
-      return res.status(500).json({ 
+      return res.status(500).json({
         error: 'Erro interno ao processar atleta',
-        message: error.message 
+        message: error.message
       });
     }
   }

@@ -10,9 +10,9 @@ export class CampeonatoRepository {
       RETURNING *;
     `;
     const values = [
-      campeonato.nome, 
-      campeonato.formato, 
-      campeonato.criterios_desempate, 
+      campeonato.nome,
+      campeonato.formato,
+      campeonato.criterios_desempate,
       campeonato.status || 'planejado',
       campeonato.modalidade,
       campeonato.categoria
@@ -33,5 +33,22 @@ export class CampeonatoRepository {
     const query = 'SELECT * FROM campeonatos WHERE id_campeonato = $1;';
     const { rows } = await pool.query(query, [id_campeonato]);
     return rows.length ? rows[0] : null;
+  }
+
+  async update(id: number, data: any) {
+    const query = `
+    UPDATE campeonatos 
+    SET nome = $1, formato = $2, criterios_desempate = $3, status = $4
+    WHERE id_campeonato = $5 RETURNING *;
+  `;
+    const values = [data.nome, data.formato || null, data.criterios_desempate || null, data.status || 'planejado', id];
+    const { rows } = await pool.query(query, values);
+    return rows[0];
+  }
+
+  async delete(id: number) {
+    const query = 'DELETE FROM campeonatos WHERE id_campeonato = $1;';
+    await pool.query(query, [id]);
+    return true;
   }
 }

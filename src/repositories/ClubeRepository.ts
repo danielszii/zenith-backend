@@ -1,27 +1,27 @@
 import { pool } from '../config/database.js'
 import { Clube } from '../models/Clube.js';
 
+
 export class ClubeRepository {
     async create(clube: Clube): Promise<Clube> {
         const query = `
-        INSERT INTO clubes (id_clube, nome, brasao, cores_oficiais, responsavel, cnpj)
-        VALUES ($1, $2, $3, $4, $5, $6)
+        INSERT INTO clubes (nome, brasao, cores_oficiais, responsavel, cnpj)
+        VALUES ($1, $2, $3, $4, $5)
         RETURNING *;
         `
         const values = [
-            clube.id_clube,
             clube.nome,
-            clube.brasao,
-            clube.cores_oficiais,
-            clube.responsavel,
-            clube.cnpj
+            clube.brasao || null,
+            clube.cores_oficiais || null,
+            clube.responsavel || null,
+            clube.cnpj || null
         ];
 
         const { rows } = await pool.query(query, values);
-            return rows[0]; // Retorna apenas o objeto criado
-        }
+        return rows[0]; // Retorna apenas o objeto criado
+    }
 
-    async findAll(): Promise<Clube[]> {   
+    async findAll(): Promise<Clube[]> {
         const query = `SELECT * FROM clubes ORDER BY nome ASC;`;
         const { rows } = await pool.query(query);
         return rows; // Retorna a lista de clubes
@@ -32,5 +32,22 @@ export class ClubeRepository {
         const { rows } = await pool.query(query, [id_clube]);
         return rows.length ? rows[0] : null;
     }
-        
+
+    async update(id: number, data: any) {
+        const query = `
+    UPDATE clubes 
+    SET nome = $1, brasao = $2, cores_oficiais = $3, responsavel = $4, cnpj = $5
+    WHERE id_clube = $6 RETURNING *;
+  `;
+        const values = [data.nome, data.brasao || null, data.cores_oficiais || null, data.responsavel || null, data.cnpj || null, id];
+        const { rows } = await pool.query(query, values);
+        return rows[0];
+    }
+
+    async delete(id: number) {
+        const query = 'DELETE FROM clubes WHERE id_clube = $1;';
+        await pool.query(query, [id]);
+        return true;
+    }
+
 }
