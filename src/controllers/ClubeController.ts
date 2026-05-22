@@ -34,6 +34,16 @@ export class ClubeController {
             });
         }
     }
+    async show(req: Request, res: Response) {
+        try {
+            const { id } = req.params;
+            const clube = await clubeService.buscarPorId(Number(id));
+            return res.json(clube);
+        } catch (error: any) {
+            return res.status(404).json({ error: error.message });
+        }
+    }
+
 
     async update(req: Request, res: Response) {
         try {

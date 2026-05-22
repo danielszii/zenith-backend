@@ -14,4 +14,8 @@ export class AtletaService {
 
   async atualizarAtleta(id: number, dados: any) { return await atletaRepository.update(id, dados); }
   async deletarAtleta(id: number) { return await atletaRepository.delete(id); }
+
+  async buscarPorId(id: number) {
+  return await atletaRepository.findById(id); // O seu repositório já tem o findById pronto!
+}
 }

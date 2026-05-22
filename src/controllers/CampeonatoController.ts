@@ -29,8 +29,22 @@ export class CampeonatoController {
             const campeonato = await campeonatoService.buscarPorId(Number(id));
             return res.json(campeonato);
         } catch (error: any) {
-            return res.status(44) // 404 Not Found se não existir
             return res.status(404).json({ error: error.message });
         }
     }
+    async update(req: Request, res: Response) {
+        try {
+            const { id } = req.params;
+            const atualizado = await campeonatoService.atualizarCampeonato(Number(id), req.body);
+            return res.json(atualizado);
+        } catch (error: any) { return res.status(400).json({ error: error.message }); }
+    }
+
+    async delete(req: Request, res: Response) {
+        try {
+            const { id } = req.params;
+            await campeonatoService.deletarCampeonato(Number(id));
+            return res.status(204).send(); // 204 significa Sucesso sem conteúdo de retorno
+        } catch (error: any) { return res.status(400).json({ error: error.message }); }
+    } 
 }
