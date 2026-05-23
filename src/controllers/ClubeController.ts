@@ -11,7 +11,7 @@ export class ClubeController {
         try {
             const { nome, brasao, cores_oficiais, responsavel, cnpj } = req.body;
 
-            const novoClube = await repository.create({ nome, brasao, cores_oficiais, responsavel, cnpj });
+            const novoClube = await clubeService.criarClube(req.body);
 
             return res.status(201).json(novoClube);
 

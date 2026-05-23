@@ -18,9 +18,7 @@ export class AtletaController {
       const { nome, cpf, data_nasc, status, peso, altura } = req.body;
 
       // 2. Chama o repositório para executar o SQL
-      const novoAtleta = await repository.create({
-        nome, cpf, data_nasc, status, peso, altura
-      });
+      const novoAtleta = await atletaService.registrarAtleta(req.body);
 
       // 3. Retorna o status 201 (Created) e o objeto criado
       return res.status(201).json(novoAtleta);

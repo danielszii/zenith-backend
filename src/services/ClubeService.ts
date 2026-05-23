@@ -17,7 +17,7 @@ export class ClubeService {
     async buscarPorId(id: number) {
          const clube = await clubeRepository.findById(id);
         if (!clube) {
-            throw new Error('Campeonato não encontrado.');
+            throw new Error('Clube não encontrado.');
         }
         return clube;
     }
