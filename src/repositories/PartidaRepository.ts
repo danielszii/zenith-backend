@@ -2,22 +2,20 @@ import { pool } from '../config/database.js';
 import { Partida } from '../models/Partida.js'; // Caso tenha a interface separada
 
 export class PartidaRepository {
-  
-  async create(data: any): Promise<Partida> {
+  async create(data: any) {
     const query = `
-      INSERT INTO partidas (id_campeonato, id_clube_casa, id_clube_fora, id_local, data, hora, status_partida)
-      VALUES ($1, $2, $3, $4, $5, $6, 'agendado')
+      INSERT INTO partidas (id_campeonato, id_mandante, id_visitante, data_partida, horario_partida, local_partida)
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *;
     `;
     const values = [
-      data.id_campeonato, 
-      data.id_clube_casa, 
-      data.id_clube_fora, 
-      data.id_local || null, 
-      data.data, 
-      data.hora
+      data.id_campeonato,
+      data.id_mandante,
+      data.id_visitante,
+      data.data_partida,
+      data.horario_partida,
+      data.local_partida
     ];
-    
     const { rows } = await pool.query(query, values);
     return rows[0];
   }
@@ -39,6 +37,24 @@ export class PartidaRepository {
       UPDATE partidas SET status_partida = $1 WHERE id_partida = $2 RETURNING *;
     `;
     const { rows } = await pool.query(query, [status, id_partida]);
+    return rows[0];
+  }
+
+  // Busca a partida com os nomes dos times já cruzados para a Súmula
+  async findSumulaDados(id_partida: number) {
+    const query = `
+      SELECT 
+        p.*,
+        c.nome as nome_campeonato,
+        m.nome as nome_mandante,
+        v.nome as nome_visitante
+      FROM partidas p
+      JOIN campeonatos c ON p.id_campeonato = c.id_campeonato
+      JOIN clubes m ON p.id_mandante = m.id_clube
+      JOIN clubes v ON p.id_visitante = v.id_clube
+      WHERE p.id_partida = $1;
+    `;
+    const { rows } = await pool.query(query, [id_partida]);
     return rows[0];
   }
 }

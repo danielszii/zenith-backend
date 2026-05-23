@@ -4,16 +4,6 @@ import { PartidaService } from '../services/PartidaService.js';
 const partidaService = new PartidaService();
 
 export class PartidaController {
-  
-  async store(req: Request, res: Response) {
-    try {
-      const novaPartida = await partidaService.agendarPartida(req.body);
-      return res.status(201).json(novaPartida);
-    } catch (error: any) {
-      return res.status(400).json({ error: error.message });
-    }
-  }
-
   async index(req: Request, res: Response) {
     try {
       const partidas = await partidaService.listarPartidas();
@@ -46,6 +36,24 @@ export class PartidaController {
       return res.json(partidaAtualizada);
     } catch (error: any) {
       return res.status(400).json({ error: error.message });
+    }
+  }
+  async store(req: Request, res: Response) {
+    try {
+      const novaPartida = await partidaService.agendarPartida(req.body);
+      return res.status(201).json(novaPartida);
+    } catch (error: any) {
+      return res.status(400).json({ error: error.message });
+    }
+  }
+
+  async showSumula(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const sumula = await partidaService.obterSumulaCompleta(Number(id));
+      return res.json(sumula);
+    } catch (error: any) {
+      return res.status(404).json({ error: error.message });
     }
   }
 }

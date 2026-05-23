@@ -1,14 +1,11 @@
 import { PartidaRepository } from '../repositories/PartidaRepository.js';
 import { CreatePartidaDTO } from '../dtos/CreatePartidaDTO.js';
+import { Request, Response } from 'express';
+
 
 const partidaRepository = new PartidaRepository();
 
 export class PartidaService {
-  
-  async agendarPartida(dados: CreatePartidaDTO) {
-    return await partidaRepository.create(dados);
-  }
-
   async listarPartidas() {
     return await partidaRepository.findAll();
   }
@@ -19,6 +16,26 @@ export class PartidaService {
       throw new Error('Partida não encontrada.');
     }
     return partida;
+  }
+
+  async agendarPartida(dados: any) {
+    // REGRA DE NEGÓCIO: Valida o cruzamento das duas entidades (Mandante e Visitante)
+    if (Number(dados.id_mandante) === Number(dados.id_visitante)) {
+      throw new Error('O clube mandante não pode ser igual ao clube visitante.');
+    }
+
+    return await partidaRepository.create(dados);
+  }
+
+  async obterSumulaCompleta(id_partida: number) {
+    const partida = await partidaRepository.findSumulaDados(id_partida);
+    if (!partida) throw new Error('Partida não encontrada.');
+
+    // No próximo passo, buscaremos os eventos aqui para anexar na súmula
+    return {
+      detalhes_partida: partida,
+      eventos: [] // Próximo passo populará isso
+    };
   }
 
   async alterarStatus(id: number, novoStatus: 'agendado' | 'em_andamento' | 'encerrado' | 'cancelado') {

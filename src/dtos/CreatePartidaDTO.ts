@@ -8,11 +8,11 @@ export class CreatePartidaDTO {
 
   @IsInt()
   @IsNotEmpty()
-  id_clube_casa!: number;
+  id_mandante!: number;
 
   @IsInt()
   @IsNotEmpty()
-  id_clube_fora!: number;
+  id_visitante!: number;
 
   @IsOptional()
   @IsInt()
@@ -20,10 +20,10 @@ export class CreatePartidaDTO {
 
   @IsDateString({}, { message: 'A data deve estar no formato AAAA-MM-DD.' })
   @IsNotEmpty()
-  data!: string;
+  data_partida!: string;
 
   @IsString()
   @IsNotEmpty()
   @Matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, { message: 'A hora deve estar no formato HH:MM.' })
-  hora!: string;
+  horario_partida!: string;
 }

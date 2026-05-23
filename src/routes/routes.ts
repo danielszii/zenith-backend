@@ -22,14 +22,12 @@ const campeonatoController = new CampeonatoController(); // Adicionado
 const partidaController = new PartidaController();
 const eventoController = new EventoSumulaController();
 
-
 // ROTAS DE CLUBES
 routes.post('/clubes', validationMiddleware(CreateClubeDTO), (req, res) => clubeController.store(req, res));
 routes.get('/clubes', (req, res) => clubeController.index(req, res));
 routes.put('/clubes/:id', (req, res) => clubeController.update(req, res));
 routes.delete('/clubes/:id', (req, res) => clubeController.delete(req, res));
 routes.get('/clubes/:id', (req, res) => clubeController.show(req, res));
-
 
 // ROTAS DE CAMPEONATOS
 routes.post('/campeonatos', validationMiddleware(CreateCampeonatoDTO), (req, res) => campeonatoController.store(req, res));
@@ -50,6 +48,8 @@ routes.post('/partidas', validationMiddleware(CreatePartidaDTO), (req, res) => p
 routes.get('/partidas', (req, res) => partidaController.index(req, res));
 routes.get('/partidas/:id', (req, res) => partidaController.show(req, res));
 routes.patch('/partidas/:id/status', (req, res) => partidaController.updateStatus(req, res));
+routes.post('/partidas', (req, res) => partidaController.store(req, res));
+routes.get('/partidas/:id/sumula', (req, res) => partidaController.showSumula(req, res));
 
 // ROTAS DE EVENTOS DE SÚMULA
 routes.post('/partidas/:id_partida/eventos', validationMiddleware(CreateEventoSumulaDTO), (req, res) => eventoController.store(req, res));
