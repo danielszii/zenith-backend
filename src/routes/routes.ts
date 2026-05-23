@@ -3,7 +3,7 @@ import { AtletaController } from '../controllers/AtletaController.js';
 import { ClubeController } from '../controllers/ClubeController.js';
 import { CampeonatoController } from '../controllers/CampeonatoController.js'; // Adicionado
 import { PartidaController } from '../controllers/PartidaController.js';
-import { EventoSumulaController } from '../controllers/EventoSumulaController.js';
+import { EventoController } from '../controllers/EventoController.js';
 
 
 // Importa o middleware e os DTOs com validação
@@ -20,7 +20,7 @@ const atletaController = new AtletaController();
 const clubeController = new ClubeController();
 const campeonatoController = new CampeonatoController(); // Adicionado
 const partidaController = new PartidaController();
-const eventoController = new EventoSumulaController();
+const eventoController = new EventoController();
 
 // ROTAS DE CLUBES
 routes.post('/clubes', validationMiddleware(CreateClubeDTO), (req, res) => clubeController.store(req, res));
@@ -52,7 +52,11 @@ routes.post('/partidas', (req, res) => partidaController.store(req, res));
 routes.get('/partidas/:id/sumula', (req, res) => partidaController.showSumula(req, res));
 
 // ROTAS DE EVENTOS DE SÚMULA
-routes.post('/partidas/:id_partida/eventos', validationMiddleware(CreateEventoSumulaDTO), (req, res) => eventoController.store(req, res));
-routes.get('/partidas/:id_partida/eventos', (req, res) => eventoController.index(req, res));
+routes.post('/partidas', validationMiddleware(CreatePartidaDTO), (req, res) => partidaController.store(req, res));
 
+// Buscar a Súmula Completa de uma partida (Dados do confronto + Gols/Cartões)
+routes.get('/partidas/:id/sumula', (req, res) => partidaController.showSumula(req, res));
+
+// Lançar um evento na partida (Gol, Cartão, Substituição) e atualizar o placar
+routes.post('/eventos', (req, res) => eventoController.store(req, res));
 export default routes;
