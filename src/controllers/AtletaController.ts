@@ -1,30 +1,26 @@
 import { Request, Response } from 'express';
 import { AtletaRepository } from '../repositories/AtletaRepository.js';
 import { AtletaService } from '../services/AtletaService.js';
+import { plainToInstance } from 'class-transformer';
+import { CreateAtletaDTO } from '../dtos/CreateAtletaDTO.js';
+import { validate } from 'class-validator';
 
 const atletaService = new AtletaService();
-
-// Instanciamos o repositório para usar dentro da classe
 const repository = new AtletaRepository();
 
 export class AtletaController {
 
-  /**
-   * Método para criar um novo registro (POST)
-   */
+  
+  //Método para criar um novo registro (POST)
+  
   async store(req: Request, res: Response) {
     try {
-      // 1. Coleta os dados do corpo da requisição (Baseado no seu DER)[cite: 2]
-      const { nome, cpf, data_nasc, status, peso, altura } = req.body;
 
-      // 2. Chama o repositório para executar o SQL
+      
       const novoAtleta = await atletaService.registrarAtleta(req.body);
-
-      // 3. Retorna o status 201 (Created) e o objeto criado
       return res.status(201).json(novoAtleta);
 
     } catch (error: any) {
-      // 4. Tratamento de erro básico
       return res.status(500).json({
         error: 'Erro interno ao processar atleta',
         message: error.message

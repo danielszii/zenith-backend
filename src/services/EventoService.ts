@@ -1,12 +1,13 @@
 import { pool } from '../config/database.js'
 import { EventoRepository } from '../repositories/EventoRepository.js';
 import { PartidaRepository } from '../repositories/PartidaRepository.js';
+import { CreateEventoDTO } from '../dtos/CreateEventoDTO.js';
 
 const eventoRepository = new EventoRepository();
 const partidaRepository = new PartidaRepository();
 
 export class EventoService {
-  async lancarEvento(dados: any) {
+  async lancarEvento(dados: CreateEventoDTO) {
     // 1. Grava o evento na tabela de eventos
     const novoEvento = await eventoRepository.create(dados);
 

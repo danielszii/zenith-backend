@@ -20,7 +20,7 @@ export class EventoRepository {
     return rows[0];
   }
 
-  // Retorna todos os eventos de UMA partida específica (Essencial para gerar o PDF depois)
+  // Retorna todos os eventos de uma partida específica
   async findByPartida(id_partida: number) {
     const query = `
       SELECT e.*, a.nome as nome_atleta, c.nome as nome_clube

@@ -1,10 +1,13 @@
 import { ClubeRepository } from '../repositories/ClubeRepository.js';
+import { Clube } from '../models/Clube.js';
+import { CreateClubeDTO } from '../dtos/CreateClubeDTO.js';
 
 const clubeRepository = new ClubeRepository();
 
 export class ClubeService {
-    async criarClube(dados: any) {
-        return await clubeRepository.create(dados);
+    async criarClube(dados: CreateClubeDTO) {
+        const clube = Clube.construir(dados.nome, dados.brasao, dados.cores_oficiais, dados.responsavel, dados.cnpj);
+        return await clubeRepository.create(clube);
     }
 
     async listarClubes() {

@@ -31,10 +31,10 @@ export class PartidaService {
     const partida = await partidaRepository.findSumulaDados(id_partida);
     if (!partida) throw new Error('Partida não encontrada.');
 
-    // No próximo passo, buscaremos os eventos aqui para anexar na súmula
+    // Buscaremos os eventos aqui para anexar na súmula
     return {
       detalhes_partida: partida,
-      eventos: [] // Próximo passo populará isso
+      eventos: [] 
     };
   }
 
@@ -42,7 +42,7 @@ export class PartidaService {
     const partida = await this.buscarPorId(id);
     const statusAtual = partida.status_partida;
 
-    // Regras de negócio para transição de status
+    // REGRA DE NEGÓCIO: Transição de de status da partida
     if (statusAtual === 'encerrado') {
       throw new Error('A partida já foi encerrada. O status não pode ser alterado.');
     }

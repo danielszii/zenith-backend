@@ -1,10 +1,13 @@
 import { CampeonatoRepository } from '../repositories/CampeonatoRepository.js';
+import { Campeonato } from '../models/Campeonato.js';
+import { CreateCampeonatoDTO } from '../dtos/CreateCampeonatoDTO.js';
 
 const campeonatoRepository = new CampeonatoRepository();
 
 export class CampeonatoService {
-  async criarCampeonato(dados: any) {
-    return await campeonatoRepository.create(dados);
+  async criarCampeonato(dados: CreateCampeonatoDTO) {
+    const campeonato = Campeonato.construir(dados.nome, dados.data_inicio, dados.data_fim, dados.local, dados.modalidade);
+    return await campeonatoRepository.create(campeonato);
   }
 
   async listarCampeonatos() {

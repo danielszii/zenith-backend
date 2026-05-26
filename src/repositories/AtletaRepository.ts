@@ -1,12 +1,9 @@
 import { pool } from '../config/database.js'; // Conexão que configuramos
+import { Atleta } from '../models/Atleta.js';
 
 export class AtletaRepository {
 
-  /**
-   * Insere um novo atleta no banco (Baseado no seu DER)[cite: 2]
-   */
-  async create(data: any) {
-    // Usamos $1, $2 para prevenir SQL Injection (Segurança Profissional)
+  async create(atleta: Atleta) {
     const query = `
       INSERT INTO atletas (nome, cpf, data_nasc, status, peso, altura)
       VALUES ($1, $2, $3, $4, $5, $6)
@@ -14,30 +11,28 @@ export class AtletaRepository {
     `;
 
     const values = [
-      data.nome,
-      data.cpf,
-      data.data_nasc,
-      data.status || 'ativo',
-      data.peso || null,
-      data.altura || null
+      atleta.nome,
+      atleta.cpf,
+      atleta.data_nasc,
+      atleta.status || 'ativo',
+      atleta.peso || null,
+      atleta.altura || null
     ];
 
     const { rows } = await pool.query(query, values);
     return rows[0]; // Retorna apenas o objeto criado
   }
 
-  /**
-   * Busca todos os atletas
-   */
+   // Busca todos os atletas
   async findAll() {
     const query = 'SELECT * FROM atletas ORDER BY nome ASC;';
     const { rows } = await pool.query(query);
     return rows;
   }
 
-  /**
-   * Busca um atleta por ID
-   */
+  
+   // Busca um atleta por ID
+
   async findById(id: number) {
     const query = 'SELECT * FROM atletas WHERE id_atleta = $1;';
     const { rows } = await pool.query(query, [id]);

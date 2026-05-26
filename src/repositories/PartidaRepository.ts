@@ -1,5 +1,5 @@
 import { pool } from '../config/database.js';
-import { Partida } from '../models/Partida.js'; // Caso tenha a interface separada
+import { Partida } from '../models/Partida.js';
 
 export class PartidaRepository {
   async create(data: any) {

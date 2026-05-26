@@ -6,7 +6,7 @@ import { PartidaController } from '../controllers/PartidaController.js';
 import { EventoController } from '../controllers/EventoController.js';
 
 
-// Importa o middleware e os DTOs com validação
+
 import { validationMiddleware } from '../middlewares/validation.middleware.js';
 import { CreateClubeDTO } from '../dtos/CreateClubeDTO.js';
 import { CreateCampeonatoDTO } from '../dtos/CreateCampeonatoDTO.js'; 

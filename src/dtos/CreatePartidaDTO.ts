@@ -1,4 +1,4 @@
-// src/dtos/CreatePartidaDTO.ts
+
 import { IsInt, IsNotEmpty, IsDateString, IsString, Matches, IsOptional } from 'class-validator';
 
 export class CreatePartidaDTO {

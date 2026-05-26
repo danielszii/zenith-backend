@@ -10,7 +10,7 @@ app.use(routes);
 
 const startServer = async () => {
     // Tenta conectar ao banco antes de abrir o servidor
-    await testConnection(); 
+   // await testConnection(); 
 
     app.listen(3000, () => {
         console.log('Zenith Server is running on port 3000');

@@ -1,12 +1,13 @@
 import { AtletaRepository } from '../repositories/AtletaRepository.js';
 import { CreateAtletaDTO } from '../dtos/CreateAtletaDTO.js';
+import { Atleta } from '../models/Atleta.js';
 
 const atletaRepository = new AtletaRepository();
 
 export class AtletaService {
   async registrarAtleta(dados: CreateAtletaDTO) {
-    // Chama o método simples que acabamos de alinhar no seu repositório
-    return await atletaRepository.create(dados);
+    const atleta = Atleta.construir(dados.nome, dados.cpf, new Date(dados.data_nasc), dados.tipo_sanguineo);
+    return await atletaRepository.create(atleta);
   }
 
   async listarAtletas() {
@@ -17,7 +18,7 @@ export class AtletaService {
   async deletarAtleta(id: number) { return await atletaRepository.delete(id); }
 
   async buscarPorId(id: number) {
-  return await atletaRepository.findById(id); // O seu repositório já tem o findById pronto!
+  return await atletaRepository.findById(id);
 }
 
 

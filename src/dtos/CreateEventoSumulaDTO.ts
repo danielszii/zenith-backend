@@ -1,4 +1,4 @@
-// src/dtos/CreateEventoSumulaDTO.ts
+
 import { IsInt, IsNotEmpty, IsIn, IsOptional, Min, Max } from 'class-validator';
 
 export class CreateEventoSumulaDTO {
