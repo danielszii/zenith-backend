@@ -57,7 +57,7 @@ export class ClubeController {
         try {
             const { id } = req.params;
             await clubeService.deletarClube(Number(id));
-            return res.status(204).send(); // 204 significa Sucesso sem conteúdo de retorno
+            return res.status(204).send();
         } catch (error: any) { return res.status(400).json({ error: error.message }); }
     }
 }

@@ -6,7 +6,7 @@ const campeonatoRepository = new CampeonatoRepository();
 
 export class CampeonatoService {
   async criarCampeonato(dados: CreateCampeonatoDTO) {
-    const campeonato = Campeonato.construir(dados.nome, dados.data_inicio, dados.data_fim, dados.modalidade);
+    const campeonato = Campeonato.construir(dados.nome, dados.data_inicio, dados.data_fim, dados.modalidade); // Validação básica usando o construtor da entidade
     return await campeonatoRepository.create(campeonato);
   }
 

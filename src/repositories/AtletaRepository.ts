@@ -1,15 +1,12 @@
 import { pool } from '../config/database.js'; // Conexão que configuramos
 
 export class AtletaRepository {
-
-  /**
-   * Insere um novo atleta no banco (Baseado no seu DER)[cite: 2]
-   */
+   //Insere um novo atleta no banco (Baseado no seu DER)[cite: 2]
   async create(data: any) {
     // Usamos $1, $2 para prevenir SQL Injection (Segurança Profissional)
     const query = `
-      INSERT INTO atletas (nome, cpf, data_nasc, status, peso, altura)
-      VALUES ($1, $2, $3, $4, $5, $6)
+      INSERT INTO atletas (nome, cpf, data_nasc, status, peso, altura, tipo_sanguineo)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *; -- Retorna o registro criado, incluindo o id_atleta gerado
     `;
 
@@ -19,7 +16,8 @@ export class AtletaRepository {
       data.data_nasc,
       data.status || 'ativo',
       data.peso || null,
-      data.altura || null
+      data.altura || null,
+      data.tipo_sanguineo
     ];
 
     const { rows } = await pool.query(query, values);

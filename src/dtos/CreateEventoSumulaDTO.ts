@@ -1,5 +1,5 @@
 // src/dtos/CreateEventoSumulaDTO.ts
-import { IsInt, IsNotEmpty, IsIn, IsOptional, Min, Max } from 'class-validator';
+import { IsInt, IsNotEmpty, IsIn, IsOptional, Min, Max, IsString } from 'class-validator';
 
 export class CreateEventoSumulaDTO {
   
@@ -11,7 +11,7 @@ export class CreateEventoSumulaDTO {
   @IsNotEmpty({ message: 'O id da partida é obrigatório.' })
   id_partida: number;
 
-  id_clube?: number; // Opcional, necessário apenas para eventos de gol para determinar se é do time da casa ou visitante
+  id_clube?: number;
 
   @IsNotEmpty({ message: 'O tipo de evento é obrigatório.' })
   @IsIn(['GOL', 'CARTAO_AMARELO', 'CARTAO_VERMELHO', 'GOL_CONTRA'], { 
@@ -24,5 +24,9 @@ export class CreateEventoSumulaDTO {
   @Min(0, { message: 'O minuto do jogo não pode ser negativo.' })
   @Max(150, { message: 'Minuto inválido (acima do limite máximo de acréscimos/prorrogação).' })
   minuto_jogo?: number;
+
+  @IsOptional()
+  @IsString({ message: 'A descrição deve ser uma string.' })
+  descricao?: string;
   
 }

@@ -1,3 +1,4 @@
+// O modelo Atleta representa um atleta com seus atributos e validações
 export type propsAtleta = {
     nome: string;
     cpf: string;
@@ -11,23 +12,20 @@ export type propsAtleta = {
 
 
 export class Atleta{
-    
-
+    // O construtor é privado para forçar o uso do método estático "construir" para criar instâncias de Atleta
     private constructor(private readonly props: propsAtleta){}
-
-
+    // O método estático "construir" é responsável por validar os dados e criar uma nova instância de Atleta
     public static construir(nome: string, cpf: string, data_nasc: Date, tipo_sanguineo: string){
-
-        if(!nome){
-            throw new Error("O atributo nome não pode ser vazio")
+        if(!nome || !cpf || !data_nasc || !tipo_sanguineo){
+            throw new Error("Os atributos nome, cpf, data de nascimento e tipo sanguíneo não podem ser vazios")
         }
-
         const props: propsAtleta = {nome, cpf,data_nasc, tipo_sanguineo}    
 
         return new Atleta(props)    
 
     }   
 
+    // Os getters permitem acessar os atributos do atleta de forma controlada, mantendo a imutabilidade dos dados
     public get nome(){  
         return this.props.nome  
     }   

@@ -5,13 +5,15 @@ export class CampeonatoRepository {
   // Criar um campeonato
   async create(campeonato: Campeonato): Promise<Campeonato> {
     const query = `
-      INSERT INTO campeonatos (nome, formato, criterios_desempate, status, modalidade, categoria)
-      VALUES ($1, $2, $3, $4, $5, $6)
+      INSERT INTO campeonatos (nome, formato, data_inicio, data_fim, criterios_desempate, status, modalidade, categoria)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING *;
     `;
     const values = [
       campeonato.nome,
       campeonato.formato,
+      campeonato.data_inicio,
+      campeonato.data_fim,
       campeonato.criterios_desempate,
       campeonato.status || 'planejado',
       campeonato.modalidade,
@@ -38,10 +40,10 @@ export class CampeonatoRepository {
   async update(id: number, data: any) {
     const query = `
     UPDATE campeonatos 
-    SET nome = $1, formato = $2, criterios_desempate = $3, status = $4
-    WHERE id_campeonato = $5 RETURNING *;
+    SET nome = $1, formato = $2, data_inicio = $3, data_fim = $4, criterios_desempate = $5, status = $6
+    WHERE id_campeonato = $7 RETURNING *;
   `;
-    const values = [data.nome, data.formato || null, data.criterios_desempate || null, data.status || 'planejado', id];
+    const values = [data.nome, data.formato || null, data.data_inicio || null, data.data_fim || null, data.criterios_desempate || null, data.status || 'planejado', id];
     const { rows } = await pool.query(query, values);
     return rows[0];
   }

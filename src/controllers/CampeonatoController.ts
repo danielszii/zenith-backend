@@ -5,8 +5,7 @@ const campeonatoService = new CampeonatoService();
 
 export class CampeonatoController {
     async store(req: Request, res: Response) {
-        try {
-            // O req.body aqui já chega 100% validado e transformado pelo middleware do DTO
+        try { 
             const novoCampeonato = await campeonatoService.criarCampeonato(req.body);
             return res.status(201).json(novoCampeonato);
         } catch (error: any) {

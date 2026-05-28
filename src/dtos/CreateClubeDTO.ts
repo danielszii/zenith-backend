@@ -3,11 +3,11 @@ import { IsString, IsNotEmpty, IsOptional, Length } from 'class-validator';
 export class CreateClubeDTO {
   @IsString()
   @IsNotEmpty({ message: 'O nome do clube é obrigatório.' })
-  nome!: string; // Com '!' porque é obrigatório
+  nome: string; 
 
   @IsOptional()
   @IsString()
-  brasao?: string; // Com '?' não precisa de '!'
+  brasao?: string; 
 
   @IsOptional()
   @IsString()

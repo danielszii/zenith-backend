@@ -4,7 +4,7 @@ import { IsInt, IsNotEmpty, IsDateString, IsString, Matches, IsOptional } from '
 export class CreatePartidaDTO {
   @IsInt({ message: 'O id do campeonato deve ser um número inteiro.' })
   @IsNotEmpty()
-  id_campeonato!: number;
+  id_campeonato: number;
 
   @IsInt()
   @IsNotEmpty()

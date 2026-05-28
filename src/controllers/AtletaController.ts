@@ -8,13 +8,10 @@ const atletaService = new AtletaService();
 const repository = new AtletaRepository();
 
 export class AtletaController {
-
-  /**
-   * Método para criar um novo registro (POST)
-   */
+   //Método para criar um novo registro (POST)
   async store(req: Request, res: Response) {
     try {
-      // 1. Coleta os dados do corpo da requisição (Baseado no seu DER)[cite: 2]
+      // 1. Coleta os dados do corpo da requisição
       const { nome, cpf, data_nasc, status, peso, altura } = req.body;
 
       // 2. Chama o repositório para executar o SQL

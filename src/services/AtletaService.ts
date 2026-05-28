@@ -5,7 +5,6 @@ const atletaRepository = new AtletaRepository();
 
 export class AtletaService {
   async registrarAtleta(dados: CreateAtletaDTO) {
-    // Chama o método simples que acabamos de alinhar no seu repositório
     return await atletaRepository.create(dados);
   }
 
