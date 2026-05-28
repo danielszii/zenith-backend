@@ -23,19 +23,13 @@ export class AtletaRepository {
     const { rows } = await pool.query(query, values);
     return rows[0]; // Retorna apenas o objeto criado
   }
-
-  /**
-   * Busca todos os atletas
-   */
+  // Busca todos os atletas
   async findAll() {
     const query = 'SELECT * FROM atletas ORDER BY nome ASC;';
     const { rows } = await pool.query(query);
     return rows;
   }
-
-  /**
-   * Busca um atleta por ID
-   */
+  // Busca um atleta por ID
   async findById(id: number) {
     const query = 'SELECT * FROM atletas WHERE id_atleta = $1;';
     const { rows } = await pool.query(query, [id]);
