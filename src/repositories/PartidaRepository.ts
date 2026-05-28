@@ -6,8 +6,7 @@ export class PartidaRepository {
     const query = `
       INSERT INTO partidas (id_campeonato, id_mandante, id_visitante, data, hora, local, status)
       VALUES ($1, $2, $3, $4, $5, $6, $7)
-      RETURNING *;
-    `;
+      RETURNING *;`;
     const values = [
       partida.id_campeonato,
       partida.id_mandante,
@@ -34,18 +33,14 @@ export class PartidaRepository {
   }
 
   async updateStatus(id_partida: number, status: string): Promise<Partida> {
-    const query = `
-      UPDATE partidas SET status = $1 WHERE id_partida = $2 RETURNING *;
-    `;
+    const query = `UPDATE partidas SET status = $1 WHERE id_partida = $2 RETURNING *;`;
     const { rows } = await pool.query(query, [status, id_partida]);
     return rows[0];
   }
 
   // Busca a partida com os nomes dos times já cruzados para a Súmula
   async findSumulaDados(id_partida: number) {
-    const query = `
-      SELECT 
-        p.*,
+    const query = `SELECT p.*,
         c.nome as nome_campeonato,
         m.nome as nome_mandante,
         v.nome as nome_visitante
@@ -53,8 +48,7 @@ export class PartidaRepository {
       JOIN campeonatos c ON p.id_campeonato = c.id_campeonato
       JOIN clubes m ON p.id_mandante = m.id_clube
       JOIN clubes v ON p.id_visitante = v.id_clube
-      WHERE p.id_partida = $1;
-    `;
+      WHERE p.id_partida = $1;`;
     const { rows } = await pool.query(query, [id_partida]);
     return rows[0];
   }

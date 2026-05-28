@@ -45,10 +45,10 @@ export class AtletaRepository {
   async update(id: number, data: any) {
     const query = `
     UPDATE atletas 
-    SET nome = $1, cpf = $2, data_nasc = $3, status = $4, peso = $5, altura = $6
-    WHERE id_atleta = $7 RETURNING *;
+    SET nome = $1, cpf = $2, data_nasc = $3, status = $4, peso = $5, altura = $6, tipo_sanguineo = $7
+    WHERE id_atleta = $8 RETURNING *;
   `;
-    const values = [data.nome, data.cpf, data.data_nasc, data.status || 'ativo', data.peso || null, data.altura || null, id];
+    const values = [data.nome, data.cpf, data.data_nasc, data.status || 'ativo', data.peso || null, data.altura || null, data.tipo_sanguineo, id];
     const { rows } = await pool.query(query, values);
     return rows[0];
   }

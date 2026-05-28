@@ -6,16 +6,13 @@ export class EventoRepository {
     const query = `
       INSERT INTO eventos_sumula (id_partida, id_atleta, id_clube, tipo_evento, minuto_evento, descricao)
       VALUES ($1, $2, $3, $4, $5, $6)
-      RETURNING *;
-    `;
-    
-    // Mapeando corretamente os dados que vêm do DTO para a query
+      RETURNING *;`;
     const values = [
       data.id_partida,
       data.id_atleta || null,
       data.id_clube || null,
       data.tipo_evento,
-      data.minuto_jogo, // Vem do DTO como minuto_jogo, salva como minuto_evento
+      data.minuto_evento,
       data.descricao || null
     ];
     

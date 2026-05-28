@@ -2,7 +2,6 @@ import { pool } from '../config/database.js';
 import { Campeonato } from '../models/Campeonato.js';
 
 export class CampeonatoRepository {
-  // Criar um campeonato
   async create(campeonato: Campeonato): Promise<Campeonato> {
     const query = `
       INSERT INTO campeonatos (nome, formato, data_inicio, data_fim, criterios_desempate, status, modalidade, categoria)

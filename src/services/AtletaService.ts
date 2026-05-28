@@ -16,7 +16,7 @@ export class AtletaService {
   async deletarAtleta(id: number) { return await atletaRepository.delete(id); }
 
   async buscarPorId(id: number) {
-  return await atletaRepository.findById(id); // O seu repositório já tem o findById pronto!
+  return await atletaRepository.findById(id);
 }
 
 

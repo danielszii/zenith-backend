@@ -18,13 +18,13 @@ export class ClubeRepository {
         ];
 
         const { rows } = await pool.query(query, values);
-        return rows[0]; // Retorna apenas o objeto criado
+        return rows[0];
     }
 
     async findAll(): Promise<Clube[]> {
         const query = `SELECT * FROM clubes ORDER BY nome ASC;`;
         const { rows } = await pool.query(query);
-        return rows; // Retorna a lista de clubes
+        return rows;
     }
 
     async findById(id_clube: number): Promise<Clube | null> {
@@ -34,11 +34,7 @@ export class ClubeRepository {
     }
 
     async update(id: number, data: any) {
-        const query = `
-    UPDATE clubes 
-    SET nome = $1, brasao = $2, cores_oficiais = $3, responsavel = $4, cnpj = $5
-    WHERE id_clube = $6 RETURNING *;
-  `;
+        const query = `UPDATE clubes SET nome = $1, brasao = $2, cores_oficiais = $3, responsavel = $4, cnpj = $5WHERE id_clube = $6 RETURNING *;`;
         const values = [data.nome, data.brasao || null, data.cores_oficiais || null, data.responsavel || null, data.cnpj || null, id];
         const { rows } = await pool.query(query, values);
         return rows[0];
