@@ -5,13 +5,19 @@ export class CreateEventoSumulaDTO {
   
   @IsInt({ message: 'O id do atleta deve ser um número inteiro.' })
   @IsNotEmpty({ message: 'O id do atleta é obrigatório.' })
-  id_atleta!: number;
+  id_atleta: number;
+
+  @IsInt({ message: 'O id da partida deve ser um número inteiro.' })
+  @IsNotEmpty({ message: 'O id da partida é obrigatório.' })
+  id_partida: number;
+
+  id_clube?: number; // Opcional, necessário apenas para eventos de gol para determinar se é do time da casa ou visitante
 
   @IsNotEmpty({ message: 'O tipo de evento é obrigatório.' })
   @IsIn(['GOL', 'CARTAO_AMARELO', 'CARTAO_VERMELHO', 'GOL_CONTRA'], { 
     message: 'Tipo de evento inválido. Use GOL, CARTAO_AMARELO, CARTAO_VERMELHO ou GOL_CONTRA.' 
   })
-  tipo_evento!: 'GOL' | 'CARTAO_AMARELO' | 'CARTAO_VERMELHO' | 'GOL_CONTRA';
+  tipo_evento: 'GOL' | 'CARTAO_AMARELO' | 'CARTAO_VERMELHO' | 'GOL_CONTRA';
 
   @IsOptional()
   @IsInt({ message: 'O minuto do jogo deve ser um número inteiro.' })

@@ -1,10 +1,66 @@
-export interface Partida {
-  id_partida?: number;
-  id_campeonato: number; // FK para campeonatos
-  id_clube_casa: number;  // FK para clubes
-  id_clube_fora: number;  // FK para clubes
-  id_local?: number | null; // FK para locais
-  data: string | Date; // Data da partida
-  hora: string; // Tipo TIME do banco (Ex: "19:30:00")
-  status_partida?: 'agendado' | 'em_andamento' | 'encerrado' | 'cancelado';
+// export interface Partida {
+//   id_partida?: number;
+//   id_campeonato: number; // FK para campeonatos
+//   id_clube_casa: number;  // FK para clubes
+//   id_clube_fora: number;  // FK para clubes
+//   id_local?: number | null; 
+//   data: string | Date; // Data da partida
+//   hora: string; // Tipo TIME do banco (Ex: "19:30:00")
+//   status_partida?: 'agendado' | 'em_andamento' | 'encerrado' | 'cancelado';
+// }
+
+export type propsPartida = {
+    id_campeonato: string; // FK para campeonatos
+    id_mandante: string;  // FK para clubes
+    id_visitante: string;  // FK para clubes
+    local: string;  // Nome do local da partida
+    data: Date; // Data da partida
+    hora: string; // Tipo TIME do banco (Ex: "19:30:00")
+    status?: 'agendado' | 'em_andamento' | 'encerrado' | 'cancelado';
 }
+
+export class Partida {
+
+    private constructor(private readonly props: propsPartida){}
+
+    public static construir(id_campeonato: string, id_mandante: string, id_visitante: string, local: string, data: Date, hora: string, status?: 'agendado' | 'em_andamento' | 'encerrado' | 'cancelado'){
+
+        if(!id_campeonato || !id_mandante || !id_visitante || !local || !data || !hora){
+            throw new Error("Todos os atributos são obrigatórios")
+        }
+
+        const props: propsPartida = {id_campeonato, id_mandante, id_visitante, local, data, hora, status}
+        return new Partida(props)
+    }
+
+    public get id_campeonato(){
+        return this.props.id_campeonato
+    }
+
+    public get id_mandante(){
+        return this.props.id_mandante
+    }
+
+    public get id_visitante(){
+        return this.props.id_visitante
+    }   
+
+    public get local(){
+        return this.props.local
+    }
+
+    public get data(){
+        return this.props.data
+    }
+
+    public get hora(){
+        return this.props.hora
+    }
+
+
+    public get status(){
+        return this.props.status
+    }
+}
+
+

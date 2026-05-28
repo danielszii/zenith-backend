@@ -9,6 +9,16 @@ export class CreateCampeonatoDTO {
   @IsString()
   formato?: string;
 
+  @IsNotEmpty({ message: 'A data de início é obrigatória.' })
+  data_inicio: Date;
+
+  @IsNotEmpty({ message: 'A data de término é obrigatória.' })
+  data_fim: Date;
+
+  @IsString()
+  @IsNotEmpty({ message: 'O local do campeonato é obrigatório.' })
+  local: string;
+
   @IsOptional()
   @IsString()
   criterios_desempate?: string;

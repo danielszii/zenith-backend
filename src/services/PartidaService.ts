@@ -1,9 +1,10 @@
 import { PartidaRepository } from '../repositories/PartidaRepository.js';
+import { EventoRepository } from '../repositories/EventoRepository.js'; // Adicionado para puxar a súmula
 import { CreatePartidaDTO } from '../dtos/CreatePartidaDTO.js';
-import { Request, Response } from 'express';
-
+import { Partida } from '../models/Partida.js';
 
 const partidaRepository = new PartidaRepository();
+const eventoRepository = new EventoRepository();
 
 export class PartidaService {
   async listarPartidas() {
@@ -18,38 +19,51 @@ export class PartidaService {
     return partida;
   }
 
-  async agendarPartida(dados: any) {
+  async agendarPartida(dados: CreatePartidaDTO) {
     // REGRA DE NEGÓCIO: Valida o cruzamento das duas entidades (Mandante e Visitante)
     if (Number(dados.id_mandante) === Number(dados.id_visitante)) {
       throw new Error('O clube mandante não pode ser igual ao clube visitante.');
     }
 
-    return await partidaRepository.create(dados);
+    // Instancia o Model usando o método construir antes de enviar ao repositório
+    const novaPartida = Partida.construir(
+      String(dados.id_campeonato), 
+      String(dados.id_mandante), 
+      String(dados.id_visitante), 
+      dados.local, 
+      new Date(dados.data), 
+      dados.hora, 
+      dados.status
+    );
+
+    return await partidaRepository.create(novaPartida);
   }
 
   async obterSumulaCompleta(id_partida: number) {
     const partida = await partidaRepository.findSumulaDados(id_partida);
     if (!partida) throw new Error('Partida não encontrada.');
 
-    // No próximo passo, buscaremos os eventos aqui para anexar na súmula
+    // Busca os eventos REAIS no banco de dados
+    const eventos = await eventoRepository.findByPartida(id_partida);
+
     return {
       detalhes_partida: partida,
-      eventos: [] // Próximo passo populará isso
+      sumula_eventos: eventos
     };
   }
 
   async alterarStatus(id: number, novoStatus: 'agendado' | 'em_andamento' | 'encerrado' | 'cancelado') {
     const partida = await this.buscarPorId(id);
-    const statusAtual = partida.status_partida;
+    const statusAtual = partida.status;
 
-    // Regras de negócio para transição de status
+    // REGRA DE NEGÓCIO: Transição de status da partida
     if (statusAtual === 'encerrado') {
       throw new Error('A partida já foi encerrada. O status não pode ser alterado.');
     }
     if (statusAtual === 'cancelado') {
       throw new Error('Esta partida foi cancelada e não pode ser reativada.');
     }
-    // Permitir apenas as transições válidas
+    // Permitir apenas as transições lógicas do futebol
     if (statusAtual === 'agendado' && novoStatus === 'encerrado') {
       throw new Error('Não é possível encerrar uma partida que não está em andamento.');
     }

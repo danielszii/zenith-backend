@@ -2,19 +2,20 @@ import { pool } from '../config/database.js';
 import { Partida } from '../models/Partida.js'; // Caso tenha a interface separada
 
 export class PartidaRepository {
-  async create(data: any) {
+  async create(partida: Partida){
     const query = `
-      INSERT INTO partidas (id_campeonato, id_mandante, id_visitante, data_partida, horario_partida, local_partida)
-      VALUES ($1, $2, $3, $4, $5, $6)
+      INSERT INTO partidas (id_campeonato, id_mandante, id_visitante, data, hora, local, status)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *;
     `;
     const values = [
-      data.id_campeonato,
-      data.id_mandante,
-      data.id_visitante,
-      data.data_partida,
-      data.horario_partida,
-      data.local_partida
+      partida.id_campeonato,
+      partida.id_mandante,
+      partida.id_visitante,
+      partida.data,
+      partida.hora,
+      partida.local,
+      partida.status || 'agendado'
     ];
     const { rows } = await pool.query(query, values);
     return rows[0];
@@ -34,7 +35,7 @@ export class PartidaRepository {
 
   async updateStatus(id_partida: number, status: string): Promise<Partida> {
     const query = `
-      UPDATE partidas SET status_partida = $1 WHERE id_partida = $2 RETURNING *;
+      UPDATE partidas SET status = $1 WHERE id_partida = $2 RETURNING *;
     `;
     const { rows } = await pool.query(query, [status, id_partida]);
     return rows[0];
