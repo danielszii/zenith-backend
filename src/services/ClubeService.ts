@@ -11,8 +11,12 @@ export class ClubeService {
         return await clubeRepository.findAll();
     }
 
-    async atualizarClube(id: number, dados: any) { return await clubeRepository.update(id, dados); }
-    async deletarClube(id: number) { return await clubeRepository.delete(id); }
+    async atualizarClube(id: number, dados: any) { 
+        return await clubeRepository.update(id, dados); 
+    }
+    async deletarClube(id: number) { 
+        return await clubeRepository.delete(id); 
+    }
 
     async buscarPorId(id: number) {
          const clube = await clubeRepository.findById(id);

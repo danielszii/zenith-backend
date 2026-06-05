@@ -1,12 +1,16 @@
 import 'reflect-metadata';
+import 'express-async-errors';
 import express, { type Request as req, type Response as res} from 'express';
 import { testConnection } from './config/database.js';
 import routes from './routes/routes.js';
+import { errorHandler } from './middlewares/errorHandler.js';
 
 const app = express();
 
 app.use(express.json());
 app.use(routes);
+
+app.use(errorHandler);
 
 const startServer = async () => {
     // Tenta conectar ao banco antes de abrir o servidor
