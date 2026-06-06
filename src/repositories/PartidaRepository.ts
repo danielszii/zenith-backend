@@ -4,10 +4,11 @@ import { Partida } from '../models/Partida.js'; // Caso tenha a interface separa
 export class PartidaRepository {
   async create(partida: Partida){
     const query = `
-      INSERT INTO partidas (id_campeonato, id_mandante, id_visitante, data, hora, local, status)
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      INSERT INTO partidas (id_partida, id_campeonato, id_mandante, id_visitante, data, hora, local, status)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING *;`;
     const values = [
+      partida.id_partida,
       partida.id_campeonato,
       partida.id_mandante,
       partida.id_visitante,
@@ -26,20 +27,20 @@ export class PartidaRepository {
     return rows;
   }
 
-  async findById(id_partida: number): Promise<Partida | null> {
+  async findById(id_partida: string): Promise<Partida | null> {
     const query = 'SELECT * FROM partidas WHERE id_partida = $1;';
     const { rows } = await pool.query(query, [id_partida]);
     return rows.length ? rows[0] : null;
   }
 
-  async updateStatus(id_partida: number, status: string): Promise<Partida> {
+  async updateStatus(id_partida: string, status: string): Promise<Partida> {
     const query = `UPDATE partidas SET status = $1 WHERE id_partida = $2 RETURNING *;`;
     const { rows } = await pool.query(query, [status, id_partida]);
     return rows[0];
   }
 
   // Busca a partida com os nomes dos times já cruzados para a Súmula
-  async findSumulaDados(id_partida: number) {
+  async findSumulaDados(id_partida: string) {
     const query = `SELECT p.*,
         c.nome as nome_campeonato,
         m.nome as nome_mandante,
@@ -53,14 +54,14 @@ export class PartidaRepository {
     return rows[0];
   }
 
-  async incrementarGolMandante(id_partida: number): Promise<void> {
+  async incrementarGolMandante(id_partida: string): Promise<void> {
     await pool.query(
       'UPDATE partidas SET gols_mandante = gols_mandante + 1 WHERE id_partida = $1', 
       [id_partida]
     );
   }
 
-  async incrementarGolVisitante(id_partida: number): Promise<void> {
+  async incrementarGolVisitante(id_partida: string): Promise<void> {
     await pool.query(
       'UPDATE partidas SET gols_visitante = gols_visitante + 1 WHERE id_partida = $1', 
       [id_partida]

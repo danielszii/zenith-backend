@@ -1,6 +1,8 @@
+import { randomUUID } from 'crypto';
 import { BadRequestError } from "../errors/AppError.js";
 
 export type propsPartida = {
+    id_partida?: string;
     id_campeonato: string; // FK para campeonatos
     id_mandante: string;  // FK para clubes
     id_visitante: string;  // FK para clubes
@@ -20,35 +22,40 @@ export class Partida {
             throw new BadRequestError("Todos os atributos são obrigatórios")
         }
 
-        const props: propsPartida = {id_campeonato, id_mandante, id_visitante, local, data, hora, status}
+        const props: propsPartida = {
+            id_partida: randomUUID(),
+            id_campeonato, 
+            id_mandante, 
+            id_visitante, 
+            local, 
+            data, 
+            hora, 
+            status
+        }
         return new Partida(props)
     }
 
+    public get id_partida(){
+        return this.props.id_partida
+    }
     public get id_campeonato(){
         return this.props.id_campeonato
     }
-
     public get id_mandante(){
         return this.props.id_mandante
     }
-
     public get id_visitante(){
         return this.props.id_visitante
     }   
-
     public get local(){
         return this.props.local
     }
-
     public get data(){
         return this.props.data
     }
-
     public get hora(){
         return this.props.hora
     }
-
-
     public get status(){
         return this.props.status
     }

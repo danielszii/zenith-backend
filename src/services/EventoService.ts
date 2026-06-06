@@ -37,10 +37,10 @@ export class EventoService {
 
     // 4. Atualiza o placar reaproveitando os dados da 'partida' já buscada
     if (tipoEvento === 'gol') {
-      if (Number(dados.id_clube) === Number(partida.id_mandante)) {
+      if (String(dados.id_clube) === String(partida.id_mandante)) {
         await partidaRepository.incrementarGolMandante(dados.id_partida);
       } 
-      else if (Number(dados.id_clube) === Number(partida.id_visitante)) {
+      else if (String(dados.id_clube) === String(partida.id_visitante)) {
         await partidaRepository.incrementarGolVisitante(dados.id_partida);
       }
     } 
@@ -48,7 +48,7 @@ export class EventoService {
   }
 
   // Junta os dados da partida + a lista de eventos reais
-  async obterSumulaCompleta(id_partida: number) {
+  async obterSumulaCompleta(id_partida: string) {
     const partida = await partidaRepository.findSumulaDados(id_partida);
     if (!partida) {
       throw new NotFoundError('Partida não encontrada.');

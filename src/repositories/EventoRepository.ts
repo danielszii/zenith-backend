@@ -6,11 +6,12 @@ export class EventoRepository {
 
   async create(evento: EventoSumula): Promise<propsEventoSumula> {
     const query = `
-      INSERT INTO eventos_sumula (id_partida, id_atleta, id_clube, tipo_evento, minuto_evento, timestamp_offline )
-      VALUES ($1, $2, $3, $4, $5, $6)
+      INSERT INTO eventos_sumula (id_evento, id_partida, id_atleta, id_clube, tipo_evento, minuto_evento, timestamp_offline )
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *;`;
 
     const values = [
+      evento.id_evento,
       evento.id_partida,
       evento.id_atleta || null,
       evento.id_clube,
@@ -24,7 +25,7 @@ export class EventoRepository {
   }
 
   // Retorna todos os eventos de uma partida específica (Súmula)
-  async findByPartida(id_partida: number): Promise<propsEventoSumula[]> {
+  async findByPartida(id_partida: string): Promise<propsEventoSumula[]> {
     const query = `
       SELECT e.*, a.nome as nome_atleta, c.nome as nome_clube
       FROM eventos_sumula e -- CORRIGIDO: Nome correto da tabela

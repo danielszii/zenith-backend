@@ -17,7 +17,7 @@ export class PartidaController {
   async show(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const partida = await partidaService.buscarPorId(Number(id));
+      const partida = await partidaService.buscarPorId(String(id));
       return res.json(partida);
     } catch (error) {
       next(error);
@@ -33,7 +33,7 @@ export class PartidaController {
         throw new BadRequestError('Status inválido fornecido. Os valores aceitos são: agendado, em_andamento, encerrado ou cancelado.');
       }
 
-      const partidaAtualizada = await partidaService.alterarStatus(Number(id), status);
+      const partidaAtualizada = await partidaService.alterarStatus(String(id), status);
       return res.json(partidaAtualizada);
     } catch (error) {
       next(error);
@@ -51,7 +51,7 @@ export class PartidaController {
   async showSumula(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const sumula = await partidaService.obterSumulaCompleta(Number(id));
+      const sumula = await partidaService.obterSumulaCompleta(String(id));
       return res.json(sumula);
     } catch (error) {
       next(error);

@@ -15,15 +15,15 @@ export class CampeonatoService {
     return await campeonatoRepository.findAll();
   }
 
-  async atualizarCampeonato(id: number, dados: Partial<CreateCampeonatoDTO>) {
+  async atualizarCampeonato(id: string, dados: Partial<CreateCampeonatoDTO>) {
     return await campeonatoRepository.update(id, dados);
   }
   
-  async deletarCampeonato(id: number) {
+  async deletarCampeonato(id: string) {
     return await campeonatoRepository.delete(id);
   }
 
-  async buscarPorId(id: number) {
+  async buscarPorId(id: string) {
     const campeonato = await campeonatoRepository.findById(id);
     if (!campeonato) {
       throw new NotFoundError('Campeonato não encontrado.');
@@ -31,7 +31,7 @@ export class CampeonatoService {
     return campeonato;
   }
 
-  async inscreverClube(id_campeonato: number, id_clube: number) {
+  async inscreverClube(id_campeonato: string, id_clube: string) {
     // 1. REGRA DE NEGÓCIO: Valida se os IDs foram enviados corretamente
     if (!id_campeonato || !id_clube) {
       throw new BusinessRuleError('Os identificadores do campeonato e do clube são obrigatórios.');

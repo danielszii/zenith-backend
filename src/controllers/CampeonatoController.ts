@@ -25,7 +25,7 @@ export class CampeonatoController {
     async show(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
-            const campeonato = await campeonatoService.buscarPorId(Number(id));
+            const campeonato = await campeonatoService.buscarPorId(String(id));
             return res.json(campeonato);
         } catch (error) {
             next(error);
@@ -34,7 +34,7 @@ export class CampeonatoController {
     async update(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
-            const atualizado = await campeonatoService.atualizarCampeonato(Number(id), req.body);
+            const atualizado = await campeonatoService.atualizarCampeonato(String(id), req.body);
             return res.json(atualizado);
         } catch (error) {
             next(error);
@@ -44,7 +44,7 @@ export class CampeonatoController {
     async delete(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
-            await campeonatoService.deletarCampeonato(Number(id));
+            await campeonatoService.deletarCampeonato(String(id));
             return res.status(204).send(); // 204 significa Sucesso sem conteúdo de retorno
         } catch (error) {
             next(error);
@@ -56,7 +56,7 @@ export class CampeonatoController {
         const { id_campeonato, id_clube } = req.body;
 
         // Chama o service que vai rodar as travas de domínio e persistir no banco intermediário
-        const novaInscricao = await campeonatoService.inscreverClube(Number(id_campeonato), Number(id_clube));
+        const novaInscricao = await campeonatoService.inscreverClube(String(id_campeonato), String(id_clube));
         return res.status(201).json(novaInscricao);
         
     } catch (error) {

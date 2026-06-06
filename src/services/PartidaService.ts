@@ -9,7 +9,7 @@ const eventoRepository = new EventoRepository();
 
 export class PartidaService {
   async agendarPartida(dados: CreatePartidaDTO) {
-    if (Number(dados.id_mandante) === Number(dados.id_visitante)) {
+    if (String(dados.id_mandante) === String(dados.id_visitante)) {
       throw new BusinessRuleError('O clube mandante não pode ser igual ao clube visitante.');
     }
     // Instancia o Model usando o método construir antes de enviar ao repositório
@@ -21,7 +21,7 @@ export class PartidaService {
     return await partidaRepository.findAll();
   }
 
-  async buscarPorId(id: number) {
+  async buscarPorId(id: string) {
     const partida = await partidaRepository.findById(id);
     if (!partida) {
       throw new NotFoundError('Partida não encontrada.');
@@ -30,7 +30,7 @@ export class PartidaService {
   }
 
 
-  async obterSumulaCompleta(id_partida: number) {
+  async obterSumulaCompleta(id_partida: string) {
     const partida = await partidaRepository.findSumulaDados(id_partida);
     if (!partida) throw new NotFoundError('Partida não encontrada.');
 
@@ -43,7 +43,7 @@ export class PartidaService {
     };
   }
 
-  async alterarStatus(id: number, novoStatus: 'agendado' | 'em_andamento' | 'encerrado' | 'cancelado') {
+  async alterarStatus(id: string, novoStatus: 'agendado' | 'em_andamento' | 'encerrado' | 'cancelado') {
     const partida = await this.buscarPorId(id);
     const statusAtual = partida.status;
 

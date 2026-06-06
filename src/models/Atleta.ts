@@ -1,13 +1,16 @@
+import { randomUUID } from 'crypto';
 import { BadRequestError } from "../errors/AppError.js";
 
 
 // O modelo Atleta representa um atleta com seus atributos e validações
 export type propsAtleta = {
+    id_atleta: string;
     nome: string;
     cpf: string;
     rg?: string;
     data_nasc: string | Date;
     tipo_sanguineo: string;
+    id_clube: string;
     peso?: number;
     altura?: number;
     status?: string;
@@ -18,23 +21,34 @@ export class Atleta {
     // O construtor é privado para forçar o uso do método estático "construir" para criar instâncias de Atleta
     private constructor(private readonly props: propsAtleta) { }
     // O método estático "construir" é responsável por validar os dados e criar uma nova instância de Atleta
-    public static construir(nome: string, cpf: string, data_nasc: string | Date, tipo_sanguineo: string) {
-        if (!nome || !cpf || !data_nasc || !tipo_sanguineo) {
-            throw new BadRequestError("Os atributos nome, cpf, data de nascimento e tipo sanguíneo não podem ser vazios")
+    public static construir(nome: string, cpf: string, data_nasc: string | Date, tipo_sanguineo: string, id_clube: string, rg?: string, peso?: number, altura?: number, status?: string) {
+        if (!nome || !cpf || !data_nasc || !tipo_sanguineo || !id_clube) { 
+            throw new BadRequestError("Os atributos nome, cpf, data de nascimento, tipo sanguíneo e id do clube não podem ser vazios");
         }
         const dataConvertida = typeof data_nasc === 'string' ? new Date(data_nasc) : data_nasc;
         const props: propsAtleta = {
+            id_atleta: randomUUID(),
             nome,
             cpf,
+            rg,
             data_nasc: dataConvertida,
-            tipo_sanguineo
+            tipo_sanguineo,
+            id_clube,
+            peso,
+            altura,
+            status: status || 'ativo'
         }
-
         return new Atleta(props)
 
     }
 
     // Os getters permitem acessar os atributos do atleta de forma controlada, mantendo a imutabilidade dos dados
+    public get id_atleta() {
+        return this.props.id_atleta;
+    }
+    public get id_clube() {
+        return this.props.id_clube
+    }
     public get nome() {
         return this.props.nome
     }

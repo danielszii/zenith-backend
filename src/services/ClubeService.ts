@@ -15,15 +15,15 @@ export class ClubeService {
         return await clubeRepository.findAll();
     }
 
-    async atualizarClube(id: number, dados: CreateClubeDTO) { 
-        return await clubeRepository.update(id, dados); 
+    async atualizarClube(id: string, dados: CreateClubeDTO) { 
+        return await clubeRepository.update(id, dados);
     }
 
-    async deletarClube(id: number) { 
+    async deletarClube(id: string) { 
         return await clubeRepository.delete(id); 
     }
 
-    async buscarPorId(id: number) {
+    async buscarPorId(id: string) {
         const clube = await clubeRepository.findById(id);
         if (!clube) {
             throw new NotFoundError('Clube não encontrado.');

@@ -9,6 +9,9 @@ export class CreateAtletaDTO {
   @IsNotEmpty({ message: 'O CPF é obrigatório.' })
   cpf: string;
 
+  @IsString()
+  rg?: string;
+
   @IsDateString({}, { message: 'A data de nascimento deve ser uma data válida (AAAA-MM-DD).' })
   @IsNotEmpty()
   data_nasc!: string;
@@ -17,9 +20,9 @@ export class CreateAtletaDTO {
   @IsNotEmpty({ message: 'O tipo sanguíneo é obrigatório.' })
   tipo_sanguineo: string;
 
-  @IsInt({ message: 'O id_clube deve ser um número inteiro.' })
+  @IsString({ message: 'O id_clube deve ser uma string.' })
   @IsNotEmpty({ message: 'O id_clube inicial é obrigatório para gerar o contrato.' })
-  id_clube!: number;
+  id_clube!: string;
 
   @IsOptional()
   @IsString()

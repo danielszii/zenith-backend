@@ -1,7 +1,9 @@
+import { randomUUID } from 'crypto';
 import { BadRequestError } from "../errors/AppError.js";
 
 
 export type propsUtilizador = {
+    id_utilizador?: string;
     nome: string;
     email: string;
     senha?: string; // Mantido opcional para quando retornarmos o usuário sem expor o hash da senha
@@ -17,10 +19,19 @@ export class Utilizador {
             throw new BadRequestError("Todos os atributos são obrigatórios")
         }
         
-        const props: propsUtilizador = {nome, email, senha, perfil}
+        const props: propsUtilizador = {
+            id_utilizador: randomUUID(),
+            nome, 
+            email, 
+            senha, 
+            perfil
+        }
         return new Utilizador(props)
     }
 
+    public get id_utilizador(){
+        return this.props.id_utilizador
+    }
     public get nome(){
         return this.props.nome
     }

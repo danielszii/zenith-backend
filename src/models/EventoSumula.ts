@@ -1,6 +1,8 @@
+import { randomUUID } from 'crypto';
 import { BadRequestError } from "../errors/AppError.js";
 
 export type propsEventoSumula = {
+    id_evento?: string;
     id_partida: string; // FK para partidas
     id_atleta: string;  // FK para atletas (quem fez o gol/cartão)
     id_clube: string;
@@ -19,11 +21,22 @@ export class EventoSumula {
             throw new BadRequestError("Os atributos id_partida, id_atleta, id_clube e tipo_evento não podem ser vazios")
         }
 
-        const props: propsEventoSumula = {id_partida, id_atleta, id_clube, tipo_evento, minuto_evento, timestamp_offline}
+        const props: propsEventoSumula = {
+            id_evento: randomUUID(),
+            id_partida, 
+            id_atleta, 
+            id_clube, 
+            tipo_evento, 
+            minuto_evento, 
+            timestamp_offline
+        }
 
         return new EventoSumula(props)
     }
 
+    public get id_evento(){
+        return this.props.id_evento
+    }
     public get id_partida(){
         return this.props.id_partida
     }

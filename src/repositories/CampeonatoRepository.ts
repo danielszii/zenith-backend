@@ -4,11 +4,12 @@ import { propsCampeonato } from '../models/Campeonato.js';
 export class CampeonatoRepository {
   async create(campeonato: propsCampeonato): Promise<propsCampeonato> {
     const query = `
-      INSERT INTO campeonatos (nome, formato, data_inicio, data_fim, criterios_desempate, status, modalidade, categoria)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      INSERT INTO campeonatos (id_campeonato, nome, formato, data_inicio, data_fim, criterios_desempate, status, modalidade, categoria)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       RETURNING *;
     `;
     const values = [
+      campeonato.id_campeonato,
       campeonato.nome,
       campeonato.formato,
       campeonato.data_inicio,
@@ -30,13 +31,13 @@ export class CampeonatoRepository {
   }
 
   // Buscar um campeonato específico por ID
-  async findById(id_campeonato: number): Promise<propsCampeonato | null> {
+  async findById(id_campeonato: string): Promise<propsCampeonato | null> {
     const query = 'SELECT * FROM campeonatos WHERE id_campeonato = $1;';
     const { rows } = await pool.query(query, [id_campeonato]);
     return rows.length ? rows[0] : null;
   }
 
-  async update(id: number, data: any) {
+  async update(id: string, data: any) {
     const query = `
     UPDATE campeonatos 
     SET nome = $1, formato = $2, data_inicio = $3, data_fim = $4, criterios_desempate = $5, status = $6
@@ -47,14 +48,14 @@ export class CampeonatoRepository {
     return rows[0];
   }
 
-  async delete(id: number): Promise<boolean> {
+  async delete(id: string): Promise<boolean> {
     const query = 'DELETE FROM campeonatos WHERE id_campeonato = $1;';
     await pool.query(query, [id]);
     return true;
   }
 
   // Verifica se o clube já está inscrito para evitar duplicidade
-  async findInscricao(id_campeonato: number, id_clube: number): Promise<any> {
+  async findInscricao(id_campeonato: string, id_clube: string): Promise<any> {
     const query = `
     SELECT * FROM campeonatos_clubes 
     WHERE id_campeonato = $1 AND id_clube = $2;
@@ -64,7 +65,7 @@ export class CampeonatoRepository {
   }
 
   // Cria o registro na tabela intermediária
-  async inscreverClube(id_campeonato: number, id_clube: number): Promise<any> {
+  async inscreverClube(id_campeonato: string, id_clube: string): Promise<any> {
     const query = `
     INSERT INTO campeonatos_clubes (id_campeonato, id_clube)
     VALUES ($1, $2)

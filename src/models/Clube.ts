@@ -1,7 +1,9 @@
+import { randomUUID } from 'crypto';
 import { BadRequestError } from "../errors/AppError.js";
 
 
 export type propsClube = {
+    id_clube?: string;
     nome: string;
     brasao?: string;
     cores_oficiais?: string;
@@ -19,11 +21,21 @@ export class Clube {
             throw new BadRequestError("Os atributos nome, responsável e CNPJ não podem ser vazios")
         }
 
-        const props: propsClube = {nome, brasao, cores_oficiais, responsavel, cnpj}
+        const props: propsClube = {
+            id_clube: randomUUID(),
+            nome, 
+            brasao, 
+            cores_oficiais, 
+            responsavel,
+            cnpj
+        }
 
         return new Clube(props)
     }
 
+    public get id_clube(){
+        return this.props.id_clube
+    }
     public get nome(){
         return this.props.nome
     }   

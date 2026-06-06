@@ -2,17 +2,17 @@ import { IsInt, IsNotEmpty, IsIn, IsOptional, Min, Max, IsString } from 'class-v
 
 export class CreateEventoSumulaDTO {
   
-  @IsInt({ message: 'O id do atleta deve ser um número inteiro.' })
+  @IsString({ message: 'O id do atleta deve ser uma string.' })
   @IsNotEmpty({ message: 'O id do atleta é obrigatório.' })
-  id_atleta: number;
+  id_atleta: string;
 
-  @IsInt({ message: 'O id da partida deve ser um número inteiro.' })
+  @IsString({ message: 'O id da partida deve ser uma string.' })
   @IsNotEmpty({ message: 'O id da partida é obrigatório.' })
-  id_partida: number;
+  id_partida: string;
 
-  @IsInt({ message: 'O id do clube deve ser un número inteiro.' })
+  @IsString({ message: 'O id do clube deve ser uma string.' })
   @IsNotEmpty({ message: 'O id do clube é obrigatório.' })
-  id_clube: number;
+  id_clube: string;
 
   @IsNotEmpty({ message: 'O tipo de evento é obrigatório.' })
   @IsIn(['GOL', 'CARTAO_AMARELO', 'CARTAO_VERMELHO'], { 

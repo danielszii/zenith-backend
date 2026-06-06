@@ -1,6 +1,8 @@
+import { randomUUID } from 'crypto';
 import { BadRequestError } from "../errors/AppError.js";
 
 export type propsCampeonato = {
+    id_campeonato?: string;
     nome: string;
     data_inicio: Date;
     data_fim: Date;
@@ -21,11 +23,24 @@ export class Campeonato {
             throw new BadRequestError("Os atributos nome, data de início, data de término e modalidade não podem ser vazios")
         }
 
-        const props: propsCampeonato = {nome, data_inicio, data_fim, modalidade, status, formato, criterios_desempate, categoria}
+        const props: propsCampeonato = {
+            id_campeonato: randomUUID(),
+            nome,
+            data_inicio, 
+            data_fim, 
+            modalidade, 
+            status, 
+            formato, 
+            criterios_desempate, 
+            categoria
+        }
 
         return new Campeonato(props)
     }
 
+    public get id_campeonato(){
+        return this.props.id_campeonato
+    }
     public get nome(){
         return this.props.nome
     }

@@ -30,7 +30,7 @@ export class AtletaController {
   async show(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const atleta = await atletaService.buscarPorId(Number(id));
+      const atleta = await atletaService.buscarPorId(String(id));
       // if (!atleta){
       //   throw new NotFoundError('Atleta não encontrado');
       // } 
@@ -43,8 +43,8 @@ export class AtletaController {
   async update(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const atualizado = await atletaService.atualizarAtleta(Number(id), req.body);
-      return res.json(atualizado);
+      const atualizado = await atletaService.atualizarAtleta(String(id), req.body);
+      return res.json(atualizado)
     } catch (error) { 
         next(error);
     }
@@ -52,7 +52,7 @@ export class AtletaController {
   async delete(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      await atletaService.deletarAtleta(Number(id));
+      await atletaService.deletarAtleta(String(id));
       return res.status(204).send(); // 204 significa Sucesso sem conteúdo de retorno
 
     } catch (error) { 

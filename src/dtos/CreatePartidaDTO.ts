@@ -1,17 +1,17 @@
 import { IsInt, IsNotEmpty, IsDateString, IsString, Matches, IsOptional } from 'class-validator';
 
 export class CreatePartidaDTO {
-  @IsInt({ message: 'O id do campeonato deve ser um número inteiro.' })
+  @IsString({ message: 'O id do campeonato deve ser uma string.' })
   @IsNotEmpty()
-  id_campeonato: number;
+  id_campeonato: string;
 
-  @IsInt()
+  @IsString()
   @IsNotEmpty()
-  id_mandante: number;
+  id_mandante: string;
 
-  @IsInt()
+  @IsString()
   @IsNotEmpty()
-  id_visitante: number;
+  id_visitante: string;
 
   @IsDateString({}, { message: 'A data deve estar no formato AAAA-MM-DD.' })
   @IsNotEmpty()
