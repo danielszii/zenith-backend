@@ -1,31 +1,26 @@
-// export interface EventoSumula {
-//   id_evento?: number;
-//   id_partida: number; // FK para partidas
-//   id_atleta: number;  // FK para atletas (quem fez o gol/cartão)
-//   tipo_evento: 'GOL' | 'CARTAO_AMARELO' | 'CARTAO_VERMELHO' | 'GOL_CONTRA';
-//   minuto_jogo?: number | null;
-//   timestamp_offline?: string | Date;
-// }
+import { BadRequestError } from "../errors/AppError";
 
 export type propsEventoSumula = {
     id_partida: string; // FK para partidas
     id_atleta: string;  // FK para atletas (quem fez o gol/cartão)
-    tipo_evento: 'GOL' | 'CARTAO_AMARELO' | 'CARTAO_VERMELHO' | 'GOL_CONTRA';
+    id_clube: string;
+    tipo_evento: 'GOL' | 'CARTAO_AMARELO' | 'CARTAO_VERMELHO';
     minuto_evento?: number | null;
     timestamp_offline?: string | Date;
+    // descricao?: string;
 }
 
 export class EventoSumula {
 
     private constructor(private readonly props: propsEventoSumula){}
 
-    public static construir(id_partida: string, id_atleta: string, tipo_evento: 'GOL' | 'CARTAO_AMARELO' | 'CARTAO_VERMELHO' | 'GOL_CONTRA', minuto_evento?: number | null, timestamp_offline?: string | Date){
+    public static construir(id_partida: string, id_atleta: string, id_clube: string, tipo_evento: 'GOL' | 'CARTAO_AMARELO' | 'CARTAO_VERMELHO', minuto_evento?: number | null, timestamp_offline?: string | Date){
 
         if(!id_partida || !id_atleta || !tipo_evento){
-            throw new Error("Os atributos id_partida, id_atleta e tipo_evento não podem ser vazios")
+            throw new BadRequestError("Os atributos id_partida, id_atleta e tipo_evento não podem ser vazios")
         }
 
-        const props: propsEventoSumula = {id_partida, id_atleta, tipo_evento, minuto_evento, timestamp_offline}
+        const props: propsEventoSumula = {id_partida, id_atleta, id_clube, tipo_evento, minuto_evento, timestamp_offline}
 
         return new EventoSumula(props)
     }
@@ -35,6 +30,9 @@ export class EventoSumula {
     }
     public get id_atleta(){
         return this.props.id_atleta
+    }
+    public get id_clube(){
+        return this.props.id_clube
     }
     public get tipo_evento(){
         return this.props.tipo_evento

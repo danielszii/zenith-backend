@@ -52,4 +52,18 @@ export class PartidaRepository {
     const { rows } = await pool.query(query, [id_partida]);
     return rows[0];
   }
+
+  async incrementarGolMandante(id_partida: number): Promise<void> {
+    await pool.query(
+      'UPDATE partidas SET gols_mandante = gols_mandante + 1 WHERE id_partida = $1', 
+      [id_partida]
+    );
+  }
+
+  async incrementarGolVisitante(id_partida: number): Promise<void> {
+    await pool.query(
+      'UPDATE partidas SET gols_visitante = gols_visitante + 1 WHERE id_partida = $1', 
+      [id_partida]
+    );
+  }
 }

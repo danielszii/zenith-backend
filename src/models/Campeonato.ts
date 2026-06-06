@@ -1,3 +1,5 @@
+import { BadRequestError } from "../errors/AppError";
+
 export type propsCampeonato = {
     nome: string;
     data_inicio: Date;
@@ -16,7 +18,7 @@ export class Campeonato {
     public static construir(nome: string, data_inicio: Date, data_fim: Date, modalidade: string, status?: string, formato?: string, criterios_desempate?: string, categoria?: string){
 
         if(!nome || !data_inicio || !data_fim || !modalidade){
-            throw new Error("Os atributos nome, data de início, data de término e modalidade não podem ser vazios")
+            throw new BadRequestError("Os atributos nome, data de início, data de término e modalidade não podem ser vazios")
         }
 
         const props: propsCampeonato = {nome, data_inicio, data_fim, modalidade, status, formato, criterios_desempate, categoria}

@@ -1,9 +1,9 @@
 import { pool } from '../config/database.js'
-import { Clube } from '../models/Clube.js';
+import { propsClube } from '../models/Clube.js';
 
 
 export class ClubeRepository {
-    async create(clube: Clube): Promise<Clube> {
+    async create(clube: propsClube): Promise<propsClube> {
         const query = `
         INSERT INTO clubes (nome, brasao, cores_oficiais, responsavel, cnpj)
         VALUES ($1, $2, $3, $4, $5)
@@ -21,13 +21,13 @@ export class ClubeRepository {
         return rows[0];
     }
 
-    async findAll(): Promise<Clube[]> {
+    async findAll(): Promise<propsClube[]> {
         const query = `SELECT * FROM clubes ORDER BY nome ASC;`;
         const { rows } = await pool.query(query);
         return rows;
     }
 
-    async findById(id_clube: number): Promise<Clube | null> {
+    async findById(id_clube: number): Promise<propsClube | null> {
         const query = 'SELECT * FROM clubes WHERE id_clube = $1;';
         const { rows } = await pool.query(query, [id_clube]);
         return rows.length ? rows[0] : null;
@@ -40,7 +40,7 @@ export class ClubeRepository {
         return rows[0];
     }
 
-    async delete(id: number) {
+    async delete(id: number): Promise<boolean> {
         const query = 'DELETE FROM clubes WHERE id_clube = $1;';
         await pool.query(query, [id]);
         return true;

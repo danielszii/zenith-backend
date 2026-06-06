@@ -1,19 +1,23 @@
 import { pool } from '../config/database.js';
+import { EventoSumula, propsEventoSumula } from '../models/EventoSumula.js';
+
 
 export class EventoRepository {
 
-  async create(data: any) {
+  async create(evento: EventoSumula): Promise<propsEventoSumula> {
     const query = `
       INSERT INTO eventos_sumula (id_partida, id_atleta, id_clube, tipo_evento, minuto_evento, descricao)
       VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *;`;
+
     const values = [
-      data.id_partida,
-      data.id_atleta || null,
-      data.id_clube || null,
-      data.tipo_evento,
-      data.minuto_evento,
-      data.descricao || null
+      evento.id_partida,
+      evento.id_atleta || null,
+      evento.id_clube,
+      evento.tipo_evento,
+      evento.minuto_evento || null,
+      evento.timestamp_offline || new Date()
+      // evento.descricao || null
     ];
     
     const { rows } = await pool.query(query, values);
@@ -21,7 +25,7 @@ export class EventoRepository {
   }
 
   // Retorna todos os eventos de uma partida específica (Súmula)
-  async findByPartida(id_partida: number) {
+  async findByPartida(id_partida: number): Promise<propsEventoSumula[]> {
     const query = `
       SELECT e.*, a.nome as nome_atleta, c.nome as nome_clube
       FROM eventos_sumula e -- CORRIGIDO: Nome correto da tabela

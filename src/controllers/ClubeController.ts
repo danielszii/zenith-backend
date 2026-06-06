@@ -1,16 +1,11 @@
 import { Request, Response } from "express";
-import { ClubeRepository } from "../repositories/ClubeRepository.js";
 import { ClubeService } from "../services/ClubeService.js";
 
 const clubeService = new ClubeService();
 
-const repository = new ClubeRepository();
-
 export class ClubeController {
     async store(req: Request, res: Response) {
         try {
-            const { nome, brasao, cores_oficiais, responsavel, cnpj } = req.body;
-
             const novoClube = await clubeService.criarClube(req.body);
 
             return res.status(201).json(novoClube);
@@ -25,7 +20,7 @@ export class ClubeController {
 
     async index(req: Request, res: Response) {
         try {
-            const clubes = await repository.findAll();
+            const clubes = await clubeService.listarClubes();
             return res.json(clubes);
         } catch (error: any) {
             return res.status(500).json({

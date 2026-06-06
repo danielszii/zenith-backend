@@ -35,11 +35,11 @@ routes.delete('/campeonatos/:id', (req, res) => campeonatoController.delete(req,
 routes.get('/campeonatos/:id', (req, res) => campeonatoController.show(req, res));
 
 // ROTAS DE ATLETAS
-routes.post('/atletas', validationMiddleware(CreateAtletaDTO), (req, res) => atletaController.store(req, res));
-routes.get('/atletas', (req, res) => atletaController.index(req, res));
-routes.put('/atletas/:id', (req, res) => atletaController.update(req, res));
-routes.delete('/atletas/:id', (req, res) => atletaController.delete(req, res));
-routes.get('/atletas/:id', (req, res) => atletaController.show(req, res));
+routes.post('/atletas', validationMiddleware(CreateAtletaDTO), (req, res, next) => atletaController.store(req, res, next));
+routes.get('/atletas', (req, res, next) => atletaController.index(req, res, next));
+routes.put('/atletas/:id', (req, res, next) => atletaController.update(req, res, next));
+routes.delete('/atletas/:id', (req, res, next) => atletaController.delete(req, res, next));
+routes.get('/atletas/:id', (req, res, next) => atletaController.show(req, res, next));
 
 // ROTAS DE PARTIDAS
 routes.post('/partidas', validationMiddleware(CreatePartidaDTO), (req, res) => partidaController.store(req, res));

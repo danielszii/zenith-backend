@@ -1,8 +1,8 @@
 import { pool } from '../config/database.js';
-import { Campeonato } from '../models/Campeonato.js';
+import { propsCampeonato } from '../models/Campeonato.js';
 
 export class CampeonatoRepository {
-  async create(campeonato: Campeonato): Promise<Campeonato> {
+  async create(campeonato: propsCampeonato): Promise<propsCampeonato> {
     const query = `
       INSERT INTO campeonatos (nome, formato, data_inicio, data_fim, criterios_desempate, status, modalidade, categoria)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
@@ -23,14 +23,14 @@ export class CampeonatoRepository {
   }
 
   // Listar campeonatos ativos/planejados
-  async findAll(): Promise<Campeonato[]> {
+  async findAll(): Promise<propsCampeonato[]> {
     const query = 'SELECT * FROM campeonatos ORDER BY id_campeonato DESC;';
     const { rows } = await pool.query(query);
     return rows;
   }
 
   // Buscar um campeonato específico por ID
-  async findById(id_campeonato: number): Promise<Campeonato | null> {
+  async findById(id_campeonato: number): Promise<propsCampeonato | null> {
     const query = 'SELECT * FROM campeonatos WHERE id_campeonato = $1;';
     const { rows } = await pool.query(query, [id_campeonato]);
     return rows.length ? rows[0] : null;
@@ -47,7 +47,7 @@ export class CampeonatoRepository {
     return rows[0];
   }
 
-  async delete(id: number) {
+  async delete(id: number): Promise<boolean> {
     const query = 'DELETE FROM campeonatos WHERE id_campeonato = $1;';
     await pool.query(query, [id]);
     return true;

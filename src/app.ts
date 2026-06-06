@@ -1,5 +1,4 @@
 import 'reflect-metadata';
-import 'express-async-errors';
 import express, { type Request as req, type Response as res} from 'express';
 import { testConnection } from './config/database.js';
 import routes from './routes/routes.js';

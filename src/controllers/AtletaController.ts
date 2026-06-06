@@ -1,20 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
-import { AtletaRepository } from '../repositories/AtletaRepository.js';
 import { AtletaService } from '../services/AtletaService.js';
 import { NotFoundError } from '../errors/AppError.js';
 
 const atletaService = new AtletaService();
 
-// Instanciamos o repositório para usar dentro da classe
-const repository = new AtletaRepository();
-
 export class AtletaController {
    //Método para criar um novo registro (POST)
   async store(req: Request, res: Response, next: NextFunction) {
     try {
-      // 1. Coleta os dados do corpo da requisição
-      const { nome, cpf, data_nasc, status, peso, altura } = req.body;
-
       // 2. Chama o repositório para executar o SQL
       const novoAtleta = await atletaService.registrarAtleta(req.body);
 
@@ -29,6 +22,7 @@ export class AtletaController {
     try {
       const atletas = await atletaService.listarAtletas();
       return res.json(atletas);
+      // throw new Error("Simulação de pane elétrica no servidor"); tESTE APREENTACAO
     } catch (error) {
         next(error); // Passa o erro para o Middleware Global
     }

@@ -1,36 +1,35 @@
 import { pool } from '../config/database.js'; // Conexão que configuramos
+import { propsAtleta } from '../models/Atleta.js';
 
 export class AtletaRepository {
-   //Insere um novo atleta no banco (Baseado no seu DER)[cite: 2]
-  async create(data: any) {
-    // Usamos $1, $2 para prevenir SQL Injection (Segurança Profissional)
+  async create(atleta: propsAtleta): Promise<propsAtleta> {
     const query = `
       INSERT INTO atletas (nome, cpf, data_nasc, status, peso, altura, tipo_sanguineo)
       VALUES ($1, $2, $3, $4, $5, $6, $7)
-      RETURNING *; -- Retorna o registro criado, incluindo o id_atleta gerado
+      RETURNING *;
     `;
 
     const values = [
-      data.nome,
-      data.cpf,
-      data.data_nasc,
-      data.status || 'ativo',
-      data.peso || null,
-      data.altura || null,
-      data.tipo_sanguineo
+      atleta.nome,
+      atleta.cpf,
+      atleta.data_nasc,
+      atleta.status || 'ativo',
+      atleta.peso || null,
+      atleta.altura || null,
+      atleta.tipo_sanguineo
     ];
 
     const { rows } = await pool.query(query, values);
     return rows[0]; // Retorna apenas o objeto criado
   }
   // Busca todos os atletas
-  async findAll() {
+  async findAll(): Promise<propsAtleta[]> {
     const query = 'SELECT * FROM atletas ORDER BY nome ASC;';
     const { rows } = await pool.query(query);
     return rows;
   }
   // Busca um atleta por ID
-  async findById(id: number) {
+  async findById(id: number): Promise<propsAtleta | null>{
     const query = 'SELECT * FROM atletas WHERE id_atleta = $1;';
     const { rows } = await pool.query(query, [id]);
     return rows[0];
@@ -47,7 +46,7 @@ export class AtletaRepository {
     return rows[0];
   }
 
-  async delete(id: number) {
+  async delete(id: number): Promise<boolean> {
     const query = 'DELETE FROM atletas WHERE id_atleta = $1;';
     await pool.query(query, [id]);
     return true;
