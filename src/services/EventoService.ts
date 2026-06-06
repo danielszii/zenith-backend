@@ -2,6 +2,7 @@ import { EventoRepository } from '../repositories/EventoRepository.js';
 import { PartidaRepository } from '../repositories/PartidaRepository.js';
 import { CreateEventoSumulaDTO } from '../dtos/CreateEventoSumulaDTO.js';
 import { BusinessRuleError, NotFoundError } from '../errors/AppError.js';
+import { EventoSumula } from '../models/EventoSumula.js';
 
 const eventoRepository = new EventoRepository();
 const partidaRepository = new PartidaRepository();
@@ -15,7 +16,6 @@ export class EventoService {
       throw new NotFoundError('Partida não encontrada.');
     }
 
-    // 2. REGRA DE NEGÓCIO: Impede eventos fora do horário do jogo
     if (partida.status === 'agendado') {
       throw new BusinessRuleError('Não é possível lançar eventos em uma partida que ainda não começou.');
     }
@@ -23,8 +23,16 @@ export class EventoService {
       throw new BusinessRuleError('A súmula desta partida já foi fechada e não pode receber novos eventos.');
     }
 
+    const eventoModel = EventoSumula.construir(
+      String(dados.id_partida),
+      String(dados.id_atleta),
+      String(dados.id_clube),
+      dados.tipo_evento,
+      dados.minuto_evento
+    );
+
     // 3. Se o status for 'em_andamento', grava o evento na tabela
-    const novoEvento = await eventoRepository.create(dados);
+    const novoEvento = await eventoRepository.create(eventoModel);
     const tipoEvento = dados.tipo_evento.toLowerCase();
 
     // 4. Atualiza o placar reaproveitando os dados da 'partida' já buscada

@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional, IsIn } from 'class-validator';
+import { IsDateString, IsString, IsNotEmpty, IsOptional, IsIn } from 'class-validator';
 
 export class CreateCampeonatoDTO {
   @IsString()
@@ -9,11 +9,13 @@ export class CreateCampeonatoDTO {
   @IsString()
   formato?: string;
 
+  @IsDateString({}, { message: 'A data de início deve ser uma data válida (AAAA-MM-DD).' })
   @IsNotEmpty({ message: 'A data de início é obrigatória.' })
-  data_inicio: Date;
+  data_inicio: string;
 
+  @IsDateString({}, { message: 'A data de término deve ser uma data válida (AAAA-MM-DD).' })
   @IsNotEmpty({ message: 'A data de término é obrigatória.' })
-  data_fim: Date;
+  data_fim: string;
 
   @IsOptional()
   @IsString()

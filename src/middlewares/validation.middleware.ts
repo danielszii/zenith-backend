@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { plainToInstance } from 'class-transformer';
 import { validate, ValidationError } from 'class-validator';
+import { BadRequestError } from '../errors/AppError.js';
 
 export function validationMiddleware(type: any) {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -12,11 +13,11 @@ export function validationMiddleware(type: any) {
 
     if (errors.length > 0) {
       // Se houver erros, mapeia e devolve direto para o frontend
-      const message = errors.map((error: ValidationError) => 
+      const messages = errors.map((error: ValidationError) => 
         Object.values(error.constraints || {})
-      ).flat();
+      ).flat().join(', ');;
       
-      return res.status(400).json({ errors: message });
+      return next(new BadRequestError(messages));
     }
 
     // Se estiver tudo ok, joga o objeto validado no req.body e segue para o Controller

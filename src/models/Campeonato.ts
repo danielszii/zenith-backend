@@ -1,4 +1,4 @@
-import { BadRequestError } from "../errors/AppError";
+import { BadRequestError } from "../errors/AppError.js";
 
 export type propsCampeonato = {
     nome: string;

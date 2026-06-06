@@ -52,4 +52,25 @@ export class CampeonatoRepository {
     await pool.query(query, [id]);
     return true;
   }
+
+  // Verifica se o clube já está inscrito para evitar duplicidade
+  async findInscricao(id_campeonato: number, id_clube: number): Promise<any> {
+    const query = `
+    SELECT * FROM campeonatos_clubes 
+    WHERE id_campeonato = $1 AND id_clube = $2;
+  `;
+    const { rows } = await pool.query(query, [id_campeonato, id_clube]);
+    return rows[0];
+  }
+
+  // Cria o registro na tabela intermediária
+  async inscreverClube(id_campeonato: number, id_clube: number): Promise<any> {
+    const query = `
+    INSERT INTO campeonatos_clubes (id_campeonato, id_clube)
+    VALUES ($1, $2)
+    RETURNING *;
+  `;
+    const { rows } = await pool.query(query, [id_campeonato, id_clube]);
+    return rows[0];
+  }
 }

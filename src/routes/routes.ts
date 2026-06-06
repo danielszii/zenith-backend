@@ -21,18 +21,19 @@ const partidaController = new PartidaController();
 const eventoController = new EventoController();
 
 // ROTAS DE CLUBES
-routes.post('/clubes', validationMiddleware(CreateClubeDTO), (req, res) => clubeController.store(req, res));
-routes.get('/clubes', (req, res) => clubeController.index(req, res));
-routes.put('/clubes/:id', (req, res) => clubeController.update(req, res));
-routes.delete('/clubes/:id', (req, res) => clubeController.delete(req, res));
-routes.get('/clubes/:id', (req, res) => clubeController.show(req, res));
+routes.post('/clubes', validationMiddleware(CreateClubeDTO), (req, res, next) => clubeController.store(req, res, next));
+routes.get('/clubes', (req, res, next) => clubeController.index(req, res, next));
+routes.put('/clubes/:id', (req, res, next) => clubeController.update(req, res, next));
+routes.delete('/clubes/:id', (req, res, next) => clubeController.delete(req, res, next));
+routes.get('/clubes/:id', (req, res, next) => clubeController.show(req, res, next));
 
 // ROTAS DE CAMPEONATOS
-routes.post('/campeonatos', validationMiddleware(CreateCampeonatoDTO), (req, res) => campeonatoController.store(req, res));
-routes.get('/campeonatos', (req, res) => campeonatoController.index(req, res));
-routes.put('/campeonatos/:id', (req, res) => campeonatoController.update(req, res));
-routes.delete('/campeonatos/:id', (req, res) => campeonatoController.delete(req, res));
-routes.get('/campeonatos/:id', (req, res) => campeonatoController.show(req, res));
+routes.post('/campeonatos', validationMiddleware(CreateCampeonatoDTO), (req, res, next) => campeonatoController.store(req, res, next));
+routes.get('/campeonatos', (req, res, next) => campeonatoController.index(req, res, next));
+routes.put('/campeonatos/:id', (req, res, next) => campeonatoController.update(req, res, next));
+routes.delete('/campeonatos/:id', (req, res, next) => campeonatoController.delete(req, res, next));
+routes.get('/campeonatos/:id', (req, res, next) => campeonatoController.show(req, res, next));
+routes.post('/campeonatos/inscricoes', (req, res, next) => campeonatoController.inscreverClube(req, res, next));
 
 // ROTAS DE ATLETAS
 routes.post('/atletas', validationMiddleware(CreateAtletaDTO), (req, res, next) => atletaController.store(req, res, next));
@@ -42,16 +43,13 @@ routes.delete('/atletas/:id', (req, res, next) => atletaController.delete(req, r
 routes.get('/atletas/:id', (req, res, next) => atletaController.show(req, res, next));
 
 // ROTAS DE PARTIDAS
-routes.post('/partidas', validationMiddleware(CreatePartidaDTO), (req, res) => partidaController.store(req, res));
-routes.get('/partidas', (req, res) => partidaController.index(req, res));
-routes.get('/partidas/:id', (req, res) => partidaController.show(req, res));
-routes.patch('/partidas/:id/status', (req, res) => partidaController.updateStatus(req, res));
+routes.post('/partidas', validationMiddleware(CreatePartidaDTO), (req, res, next) => partidaController.store(req, res, next));
+routes.get('/partidas', (req, res, next) => partidaController.index(req, res, next));
+routes.get('/partidas/:id', (req, res, next) => partidaController.show(req, res, next));
+routes.patch('/partidas/:id/status', (req, res, next) => partidaController.updateStatus(req, res, next));
 
 // ROTAS DA SÚMULA E EVENTOS
-// Buscar a Súmula Completa de uma partida (Dados do confronto + Gols/Cartões)
-routes.get('/partidas/:id/sumula', (req, res) => partidaController.showSumula(req, res));
-
-// Lançar um evento na partida (Gol, Cartão, Substituição) e atualizar o placar
-routes.post('/eventos', validationMiddleware(CreateEventoSumulaDTO), (req, res) => eventoController.store(req, res));
+routes.get('/partidas/:id/sumula', (req, res, next) => partidaController.showSumula(req, res, next));
+routes.post('/eventos', validationMiddleware(CreateEventoSumulaDTO), (req, res, next) => eventoController.store(req, res, next));
 
 export default routes;

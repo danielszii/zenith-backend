@@ -15,7 +15,7 @@ export class AtletaService {
     return await atletaRepository.findAll();
   }
 
-  async atualizarAtleta(id: number, dados: CreateAtletaDTO) {
+  async atualizarAtleta(id: number, dados: Partial<CreateAtletaDTO>) {
     return await atletaRepository.update(id, dados);
   }
 

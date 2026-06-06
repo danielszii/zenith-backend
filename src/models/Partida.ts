@@ -1,3 +1,5 @@
+import { BadRequestError } from "../errors/AppError.js";
+
 export type propsPartida = {
     id_campeonato: string; // FK para campeonatos
     id_mandante: string;  // FK para clubes
@@ -15,7 +17,7 @@ export class Partida {
     public static construir(id_campeonato: string, id_mandante: string, id_visitante: string, local: string, data: Date, hora: string, status?: 'agendado' | 'em_andamento' | 'encerrado' | 'cancelado'){
 
         if(!id_campeonato || !id_mandante || !id_visitante || !local || !data || !hora){
-            throw new Error("Todos os atributos são obrigatórios")
+            throw new BadRequestError("Todos os atributos são obrigatórios")
         }
 
         const props: propsPartida = {id_campeonato, id_mandante, id_visitante, local, data, hora, status}

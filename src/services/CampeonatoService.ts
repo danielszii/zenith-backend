@@ -1,13 +1,13 @@
 import { CampeonatoRepository } from '../repositories/CampeonatoRepository.js';
 import { CreateCampeonatoDTO } from '../dtos/CreateCampeonatoDTO.js';
 import { Campeonato } from '../models/Campeonato.js';
-import { NotFoundError } from '../errors/AppError.js';
+import { BusinessRuleError, NotFoundError } from '../errors/AppError.js';
 
 const campeonatoRepository = new CampeonatoRepository();
 
 export class CampeonatoService {
   async criarCampeonato(dados: CreateCampeonatoDTO) {
-    const campeonato = Campeonato.construir(dados.nome, dados.data_inicio, dados.data_fim, dados.modalidade); // Validação básica usando o construtor da entidade
+    const campeonato = Campeonato.construir(dados.nome, new Date(dados.data_inicio), new Date(dados.data_fim), dados.modalidade); // Validação básica usando o construtor da entidade
     return await campeonatoRepository.create(campeonato);
   }
 
@@ -15,7 +15,7 @@ export class CampeonatoService {
     return await campeonatoRepository.findAll();
   }
 
-  async atualizarCampeonato(id: number, dados: CreateCampeonatoDTO) {
+  async atualizarCampeonato(id: number, dados: Partial<CreateCampeonatoDTO>) {
     return await campeonatoRepository.update(id, dados);
   }
   
@@ -29,5 +29,22 @@ export class CampeonatoService {
       throw new NotFoundError('Campeonato não encontrado.');
     }
     return campeonato;
+  }
+
+  async inscreverClube(id_campeonato: number, id_clube: number) {
+    // 1. REGRA DE NEGÓCIO: Valida se os IDs foram enviados corretamente
+    if (!id_campeonato || !id_clube) {
+      throw new BusinessRuleError('Os identificadores do campeonato e do clube são obrigatórios.');
+    }
+
+    // 2. REGRA DE NEGÓCIO: Verifica se o clube já está participando desse campeonato
+    const inscricaoExistente = await campeonatoRepository.findInscricao(id_campeonato, id_clube);
+    
+    if (inscricaoExistente) {
+      throw new BusinessRuleError('Este clube já está inscrito neste campeonato.');
+    }
+
+    // 3. Se passou pelas regras, manda o repositório gravar no banco
+    return await campeonatoRepository.inscreverClube(id_campeonato, id_clube);
   }
 }

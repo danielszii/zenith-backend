@@ -1,3 +1,6 @@
+import { BadRequestError } from "../errors/AppError.js";
+
+
 export type propsUtilizador = {
     nome: string;
     email: string;
@@ -11,7 +14,7 @@ export class Utilizador {
 
     public static construir(nome: string, email: string, senha: string, perfil: string){
         if(!nome || !email || !senha || !perfil){
-            throw new Error("Todos os atributos são obrigatórios")
+            throw new BadRequestError("Todos os atributos são obrigatórios")
         }
         
         const props: propsUtilizador = {nome, email, senha, perfil}

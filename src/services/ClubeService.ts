@@ -7,7 +7,7 @@ const clubeRepository = new ClubeRepository();
 
 export class ClubeService {
     async criarClube(dados: CreateClubeDTO) {
-        const clube = Clube.construir(dados.nome)
+        const clube = Clube.construir(dados.nome, dados.brasao, dados.cores_oficiais, dados.responsavel, dados.cnpj);
         return await clubeRepository.create(clube);
     }
 

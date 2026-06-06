@@ -24,7 +24,7 @@ export class PartidaService {
   async buscarPorId(id: number) {
     const partida = await partidaRepository.findById(id);
     if (!partida) {
-      throw new Error('Partida não encontrada.');
+      throw new NotFoundError('Partida não encontrada.');
     }
     return partida;
   }
@@ -32,7 +32,7 @@ export class PartidaService {
 
   async obterSumulaCompleta(id_partida: number) {
     const partida = await partidaRepository.findSumulaDados(id_partida);
-    if (!partida) throw new Error('Partida não encontrada.');
+    if (!partida) throw new NotFoundError('Partida não encontrada.');
 
     // Busca os eventos REAIS no banco de dados
     const eventos = await eventoRepository.findByPartida(id_partida);
@@ -49,20 +49,20 @@ export class PartidaService {
 
     // REGRA DE NEGÓCIO: Transição de status da partida
     if (statusAtual === 'encerrado') {
-      throw new Error('A partida já foi encerrada. O status não pode ser alterado.');
+      throw new BusinessRuleError('A partida já foi encerrada. O status não pode ser alterado.');
     }
     if (statusAtual === 'cancelado') {
-      throw new Error('Esta partida foi cancelada e não pode ser reativada.');
+      throw new BusinessRuleError('Esta partida foi cancelada e não pode ser reativada.');
     }
     // Permitir apenas as transições lógicas do futebol
     if (statusAtual === 'agendado' && novoStatus === 'encerrado') {
-      throw new Error('Não é possível encerrar uma partida que não está em andamento.');
+      throw new BusinessRuleError('Não é possível encerrar uma partida que não está em andamento.');
     }
     if (statusAtual === 'em_andamento' && novoStatus === 'agendado') {
-      throw new Error('A partida já iniciou. Ela não pode voltar a ser agendada.');
+      throw new BusinessRuleError('A partida já iniciou. Ela não pode voltar a ser agendada.');
     }
     if (statusAtual === novoStatus) {
-      throw new Error(`A partida já encontra-se com o status '${novoStatus}'.`);
+      throw new BusinessRuleError(`A partida já encontra-se com o status '${novoStatus}'.`);
     }
 
     return await partidaRepository.updateStatus(id, novoStatus);

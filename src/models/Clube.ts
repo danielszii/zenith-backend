@@ -1,3 +1,6 @@
+import { BadRequestError } from "../errors/AppError.js";
+
+
 export type propsClube = {
     nome: string;
     brasao?: string;
@@ -13,7 +16,7 @@ export class Clube {
     public static construir(nome: string, brasao?: string, cores_oficiais?: string, responsavel?: string, cnpj?: string){
 
         if(!nome || !responsavel || !cnpj){
-            throw new Error("Os atributos nome, responsável e CNPJ não podem ser vazios")
+            throw new BadRequestError("Os atributos nome, responsável e CNPJ não podem ser vazios")
         }
 
         const props: propsClube = {nome, brasao, cores_oficiais, responsavel, cnpj}

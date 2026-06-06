@@ -1,4 +1,4 @@
-import { BadRequestError } from "../errors/AppError";
+import { BadRequestError } from "../errors/AppError.js";
 
 export type propsEventoSumula = {
     id_partida: string; // FK para partidas
@@ -7,7 +7,6 @@ export type propsEventoSumula = {
     tipo_evento: 'GOL' | 'CARTAO_AMARELO' | 'CARTAO_VERMELHO';
     minuto_evento?: number | null;
     timestamp_offline?: string | Date;
-    // descricao?: string;
 }
 
 export class EventoSumula {
@@ -16,8 +15,8 @@ export class EventoSumula {
 
     public static construir(id_partida: string, id_atleta: string, id_clube: string, tipo_evento: 'GOL' | 'CARTAO_AMARELO' | 'CARTAO_VERMELHO', minuto_evento?: number | null, timestamp_offline?: string | Date){
 
-        if(!id_partida || !id_atleta || !tipo_evento){
-            throw new BadRequestError("Os atributos id_partida, id_atleta e tipo_evento não podem ser vazios")
+        if(!id_partida || !id_atleta || !id_clube || !tipo_evento){
+            throw new BadRequestError("Os atributos id_partida, id_atleta, id_clube e tipo_evento não podem ser vazios")
         }
 
         const props: propsEventoSumula = {id_partida, id_atleta, id_clube, tipo_evento, minuto_evento, timestamp_offline}

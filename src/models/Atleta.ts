@@ -1,3 +1,6 @@
+import { BadRequestError } from "../errors/AppError.js";
+
+
 // O modelo Atleta representa um atleta com seus atributos e validações
 export type propsAtleta = {
     nome: string;
@@ -17,7 +20,7 @@ export class Atleta {
     // O método estático "construir" é responsável por validar os dados e criar uma nova instância de Atleta
     public static construir(nome: string, cpf: string, data_nasc: string | Date, tipo_sanguineo: string) {
         if (!nome || !cpf || !data_nasc || !tipo_sanguineo) {
-            throw new Error("Os atributos nome, cpf, data de nascimento e tipo sanguíneo não podem ser vazios")
+            throw new BadRequestError("Os atributos nome, cpf, data de nascimento e tipo sanguíneo não podem ser vazios")
         }
         const dataConvertida = typeof data_nasc === 'string' ? new Date(data_nasc) : data_nasc;
         const props: propsAtleta = {

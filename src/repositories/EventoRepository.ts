@@ -6,7 +6,7 @@ export class EventoRepository {
 
   async create(evento: EventoSumula): Promise<propsEventoSumula> {
     const query = `
-      INSERT INTO eventos_sumula (id_partida, id_atleta, id_clube, tipo_evento, minuto_evento, descricao)
+      INSERT INTO eventos_sumula (id_partida, id_atleta, id_clube, tipo_evento, minuto_evento, timestamp_offline )
       VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *;`;
 
@@ -17,7 +17,6 @@ export class EventoRepository {
       evento.tipo_evento,
       evento.minuto_evento || null,
       evento.timestamp_offline || new Date()
-      // evento.descricao || null
     ];
     
     const { rows } = await pool.query(query, values);

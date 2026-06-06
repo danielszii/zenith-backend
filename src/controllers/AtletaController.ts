@@ -12,7 +12,7 @@ export class AtletaController {
       const novoAtleta = await atletaService.registrarAtleta(req.body);
 
       // 3. Retorna o status 201 (Created) e o objeto criado
-      return res.status(201).json(novoAtleta);
+        return res.status(201).json(novoAtleta);
     } catch (error) {
         next(error); // Passa o erro para o Middleware Global
     }
@@ -22,7 +22,6 @@ export class AtletaController {
     try {
       const atletas = await atletaService.listarAtletas();
       return res.json(atletas);
-      // throw new Error("Simulação de pane elétrica no servidor"); tESTE APREENTACAO
     } catch (error) {
         next(error); // Passa o erro para o Middleware Global
     }
@@ -32,9 +31,9 @@ export class AtletaController {
     try {
       const { id } = req.params;
       const atleta = await atletaService.buscarPorId(Number(id));
-      if (!atleta){
-        throw new NotFoundError('Atleta não encontrado');
-      } 
+      // if (!atleta){
+      //   throw new NotFoundError('Atleta não encontrado');
+      // } 
       return res.json(atleta);
     } catch (error) {
         next(error);
@@ -46,7 +45,7 @@ export class AtletaController {
       const { id } = req.params;
       const atualizado = await atletaService.atualizarAtleta(Number(id), req.body);
       return res.json(atualizado);
-    } catch (error: any) { 
+    } catch (error) { 
         next(error);
     }
   }
