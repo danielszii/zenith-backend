@@ -1,12 +1,12 @@
 import { randomUUID } from 'crypto';
-import { BadRequestError } from "../errors/AppError.js";
+import { BadRequestError } from '../errors/BadRequestError.js';
 
 export type propsPartida = {
     id_partida?: string;
-    id_campeonato: string; // FK para campeonatos
-    id_mandante: string;  // FK para clubes
-    id_visitante: string;  // FK para clubes
-    local: string;  // Nome do local da partida
+    id_campeonato: string; 
+    id_mandante: string; 
+    id_visitante: string; 
+    local: string;  
     data: Date; // Data da partida
     hora: string; // Tipo TIME do banco (Ex: "19:30:00")
     status?: 'agendado' | 'em_andamento' | 'encerrado' | 'cancelado';

@@ -1,5 +1,5 @@
 import { pool } from '../config/database.js';
-import { Partida } from '../models/Partida.js'; // Caso tenha a interface separada
+import { Partida } from '../models/Partida.js'; 
 
 export class PartidaRepository {
   async create(partida: Partida) {
@@ -39,7 +39,6 @@ export class PartidaRepository {
     return rows[0];
   }
 
-  // Busca a partida com os nomes dos times já cruzados para a Súmula
   async findSumulaDados(id_partida: string) {
     const query = `SELECT p.*,
         c.nome as nome_campeonato,

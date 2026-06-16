@@ -1,30 +1,31 @@
 import { ClubeRepository } from '../repositories/ClubeRepository.js';
 import { CreateClubeDTO } from '../dtos/CreateClubeDTO.js';
 import { Clube } from '../models/Clube.js';
-import { NotFoundError } from '../errors/AppError.js';
-
-const clubeRepository = new ClubeRepository();
+import { NotFoundError } from '../errors/NotFoundError.js';
 
 export class ClubeService {
+
+    public constructor(private readonly clubeRepository: ClubeRepository) {}
+
     async criarClube(dados: CreateClubeDTO) {
         const clube = Clube.construir(dados.nome, dados.brasao, dados.cores_oficiais, dados.responsavel, dados.cnpj);
-        return await clubeRepository.create(clube);
+        return await this.clubeRepository.create(clube);
     }
 
     async listarClubes() {
-        return await clubeRepository.findAll();
+        return await this.clubeRepository.findAll();
     }
 
     async atualizarClube(id: string, dados: CreateClubeDTO) {
-        return await clubeRepository.update(id, dados);
+        return await this.clubeRepository.update(id, dados);
     }
 
     async deletarClube(id: string) {
-        return await clubeRepository.delete(id);
+        return await this.clubeRepository.delete(id);
     }
 
     async buscarPorId(id: string) {
-        const clube = await clubeRepository.findById(id);
+        const clube = await this.clubeRepository.findById(id);
         if (!clube) {
             throw new NotFoundError('Clube não encontrado.');
         }

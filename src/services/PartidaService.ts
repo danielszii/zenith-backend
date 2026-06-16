@@ -2,27 +2,28 @@ import { PartidaRepository } from '../repositories/PartidaRepository.js';
 import { EventoRepository } from '../repositories/EventoRepository.js'; // Adicionado para puxar a súmula
 import { CreatePartidaDTO } from '../dtos/CreatePartidaDTO.js';
 import { Partida } from '../models/Partida.js';
-import { NotFoundError, BusinessRuleError } from '../errors/AppError.js';
-
-const partidaRepository = new PartidaRepository();
-const eventoRepository = new EventoRepository();
+import { NotFoundError } from '../errors/NotFoundError.js';
+import { BusinessRuleError } from '../errors/BusinessRuleError.js';
 
 export class PartidaService {
+
+  public constructor(private readonly PartidaRepository: PartidaRepository, private readonly EventoRepository: EventoRepository) { }
+
   async agendarPartida(dados: CreatePartidaDTO) {
     if (String(dados.id_mandante) === String(dados.id_visitante)) {
       throw new BusinessRuleError('O clube mandante não pode ser igual ao clube visitante.');
     }
-    // Instancia o Model usando o método construir antes de enviar ao repositório
+
     const novaPartida = Partida.construir(String(dados.id_campeonato), String(dados.id_mandante), String(dados.id_visitante), dados.local, new Date(dados.data), dados.hora, dados.status);
-    return await partidaRepository.create(novaPartida);
+    return await this.PartidaRepository.create(novaPartida);
   }
 
   async listarPartidas() {
-    return await partidaRepository.findAll();
+    return await this.PartidaRepository.findAll();
   }
 
   async buscarPorId(id: string) {
-    const partida = await partidaRepository.findById(id);
+    const partida = await this.PartidaRepository.findById(id);
     if (!partida) {
       throw new NotFoundError('Partida não encontrada.');
     }
@@ -31,11 +32,10 @@ export class PartidaService {
 
 
   async obterSumulaCompleta(id_partida: string) {
-    const partida = await partidaRepository.findSumulaDados(id_partida);
+    const partida = await this.PartidaRepository.findSumulaDados(id_partida);
     if (!partida) throw new NotFoundError('Partida não encontrada.');
 
-    // Busca os eventos REAIS no banco de dados
-    const eventos = await eventoRepository.findByPartida(id_partida);
+    const eventos = await this.EventoRepository.findByPartida(id_partida);
 
     return {
       detalhes_partida: partida,
@@ -47,7 +47,6 @@ export class PartidaService {
     const partida = await this.buscarPorId(id);
     const statusAtual = partida.status;
 
-    // REGRA DE NEGÓCIO: Transição de status da partida
     if (statusAtual === 'encerrado') {
       throw new BusinessRuleError('A partida já foi encerrada. O status não pode ser alterado.');
     }
@@ -65,6 +64,6 @@ export class PartidaService {
       throw new BusinessRuleError(`A partida já encontra-se com o status '${novoStatus}'.`);
     }
 
-    return await partidaRepository.updateStatus(id, novoStatus);
+    return await this.PartidaRepository.updateStatus(id, novoStatus);
   }
 }

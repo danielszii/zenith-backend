@@ -1,4 +1,4 @@
-import { pool } from '../config/database.js'; // Conexão que configuramos
+import { pool } from '../config/database.js';
 import { propsAtleta } from '../models/Atleta.js';
 
 export class AtletaRepository {
@@ -23,15 +23,13 @@ export class AtletaRepository {
     ];
 
     const { rows } = await pool.query(query, values);
-    return rows[0]; // Retorna apenas o objeto criado
+    return rows[0]; 
   }
-  // Busca todos os atletas
   async findAll(): Promise<propsAtleta[]> {
     const query = 'SELECT * FROM atletas ORDER BY nome ASC;';
     const { rows } = await pool.query(query);
     return rows;
   }
-  // Busca um atleta por ID
   async findById(id: string): Promise<propsAtleta | null> {
     const query = 'SELECT * FROM atletas WHERE id_atleta = $1;';
     const { rows } = await pool.query(query, [id]);

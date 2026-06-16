@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto';
-import { BadRequestError } from "../errors/AppError.js";
+import { BadRequestError } from '../errors/BadRequestError.js';
 
 
 export type propsClube = {

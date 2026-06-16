@@ -1,10 +1,10 @@
 import { randomUUID } from 'crypto';
-import { BadRequestError } from "../errors/AppError.js";
+import { BadRequestError } from '../errors/BadRequestError.js';
 
 export type propsEventoSumula = {
     id_evento?: string;
-    id_partida: string; // FK para partidas
-    id_atleta: string;  // FK para atletas (quem fez o gol/cartão)
+    id_partida: string;
+    id_atleta: string; 
     id_clube: string;
     tipo_evento: 'GOL' | 'CARTAO_AMARELO' | 'CARTAO_VERMELHO';
     minuto_evento?: number | null;

@@ -24,7 +24,6 @@ export class EventoRepository {
     return rows[0];
   }
 
-  // Retorna todos os eventos de uma partida específica (Súmula)
   async findByPartida(id_partida: string): Promise<propsEventoSumula[]> {
     const query = `
       SELECT e.*, a.nome as nome_atleta, c.nome as nome_clube

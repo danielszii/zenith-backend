@@ -1,13 +1,13 @@
 import { randomUUID } from 'crypto';
-import { BadRequestError } from "../errors/AppError.js";
+import { BadRequestError } from '../errors/BadRequestError.js';
 
 
 export type propsUtilizador = {
     id_utilizador?: string;
     nome: string;
     email: string;
-    senha?: string; // Mantido opcional para quando retornarmos o usuário sem expor o hash da senha
-    perfil: string; // Ex: 'admin', 'gestor', 'arbitro'
+    senha?: string; 
+    perfil: string; 
 }
 
 export class Utilizador {

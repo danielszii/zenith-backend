@@ -1,13 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import { PartidaService } from '../services/PartidaService.js';
-import { BadRequestError } from '../errors/AppError.js';
-
-const partidaService = new PartidaService();
+import { BadRequestError } from '../errors/BadRequestError.js';
 
 export class PartidaController {
+
+  public constructor(private readonly PartidaService: PartidaService) { }
+
   async index(req: Request, res: Response, next: NextFunction) {
     try {
-      const partidas = await partidaService.listarPartidas();
+      const partidas = await this.PartidaService.listarPartidas();
       return res.json(partidas);
     } catch (error) {
       next(error);
@@ -17,7 +18,7 @@ export class PartidaController {
   async show(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const partida = await partidaService.buscarPorId(String(id));
+      const partida = await this.PartidaService.buscarPorId(String(id));
       return res.json(partida);
     } catch (error) {
       next(error);
@@ -33,7 +34,7 @@ export class PartidaController {
         throw new BadRequestError('Status inválido fornecido. Os valores aceitos são: agendado, em_andamento, encerrado ou cancelado.');
       }
 
-      const partidaAtualizada = await partidaService.alterarStatus(String(id), status);
+      const partidaAtualizada = await this.PartidaService.alterarStatus(String(id), status);
       return res.json(partidaAtualizada);
     } catch (error) {
       next(error);
@@ -41,7 +42,7 @@ export class PartidaController {
   }
   async store(req: Request, res: Response, next: NextFunction) {
     try {
-      const novaPartida = await partidaService.agendarPartida(req.body);
+      const novaPartida = await this.PartidaService.agendarPartida(req.body);
       return res.status(201).json(novaPartida);
     } catch (error) {
       next(error);
@@ -51,7 +52,7 @@ export class PartidaController {
   async showSumula(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const sumula = await partidaService.obterSumulaCompleta(String(id));
+      const sumula = await this.PartidaService.obterSumulaCompleta(String(id));
       return res.json(sumula);
     } catch (error) {
       next(error);

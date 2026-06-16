@@ -1,12 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import { ClubeService } from "../services/ClubeService.js";
 
-const clubeService = new ClubeService();
 
 export class ClubeController {
+
+    public constructor(private readonly ClubeService: ClubeService) { }
+
     async store(req: Request, res: Response, next: NextFunction) {
         try {
-            const novoClube = await clubeService.criarClube(req.body);
+            const novoClube = await this.ClubeService.criarClube(req.body);
 
             return res.status(201).json(novoClube);
 
@@ -17,7 +19,7 @@ export class ClubeController {
 
     async index(req: Request, res: Response, next: NextFunction) {
         try {
-            const clubes = await clubeService.listarClubes();
+            const clubes = await this.ClubeService.listarClubes();
             return res.json(clubes);
         } catch (error) {
             next(error);
@@ -26,7 +28,7 @@ export class ClubeController {
     async show(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
-            const clube = await clubeService.buscarPorId(String(id));
+            const clube = await this.ClubeService.buscarPorId(String(id));
             return res.json(clube);
         } catch (error) {
             next(error);
@@ -37,7 +39,7 @@ export class ClubeController {
     async update(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
-            const atualizado = await clubeService.atualizarClube(String(id), req.body);
+            const atualizado = await this.ClubeService.atualizarClube(String(id), req.body);
             return res.json(atualizado);
         } catch (error) {
             next(error);
@@ -47,7 +49,7 @@ export class ClubeController {
     async delete(req: Request, res: Response, next: NextFunction) {
         try {
             const { id } = req.params;
-            await clubeService.deletarClube(String(id));
+            await this.ClubeService.deletarClube(String(id));
             return res.status(204).send();
         } catch (error) {
             next(error);

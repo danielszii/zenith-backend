@@ -1,5 +1,6 @@
 import { randomUUID } from 'crypto';
-import { BadRequestError } from "../errors/AppError.js";
+import { BadRequestError } from '../errors/BadRequestError.js';
+import { ValidarCPF } from '../util/validarCPF.js';
 
 
 // O modelo Atleta representa um atleta com seus atributos e validações
@@ -18,13 +19,18 @@ export type propsAtleta = {
 
 
 export class Atleta {
-    // O construtor é privado para forçar o uso do método estático "construir" para criar instâncias de Atleta
     private constructor(private readonly props: propsAtleta) { }
-    // O método estático "construir" é responsável por validar os dados e criar uma nova instância de Atleta
     public static construir(nome: string, cpf: string, data_nasc: string | Date, tipo_sanguineo: string, id_clube: string, rg?: string, peso?: number, altura?: number, status?: string) {
+
         if (!nome || !cpf || !data_nasc || !tipo_sanguineo || !id_clube) {
             throw new BadRequestError("Os atributos nome, cpf, data de nascimento, tipo sanguíneo e id do clube não podem ser vazios");
         }
+
+        if (!ValidarCPF.validarCPF(cpf)) {
+            throw new BadRequestError("CPF inválido");
+        }
+
+
         const dataConvertida = typeof data_nasc === 'string' ? new Date(data_nasc) : data_nasc;
         const props: propsAtleta = {
             id_atleta: randomUUID(),

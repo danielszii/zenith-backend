@@ -23,14 +23,12 @@ export class CampeonatoRepository {
     return rows[0];
   }
 
-  // Listar campeonatos ativos/planejados
   async findAll(): Promise<propsCampeonato[]> {
     const query = 'SELECT * FROM campeonatos ORDER BY id_campeonato DESC;';
     const { rows } = await pool.query(query);
     return rows;
   }
 
-  // Buscar um campeonato específico por ID
   async findById(id_campeonato: string): Promise<propsCampeonato | null> {
     const query = 'SELECT * FROM campeonatos WHERE id_campeonato = $1;';
     const { rows } = await pool.query(query, [id_campeonato]);
@@ -54,7 +52,6 @@ export class CampeonatoRepository {
     return true;
   }
 
-  // Verifica se o clube já está inscrito para evitar duplicidade
   async findInscricao(id_campeonato: string, id_clube: string): Promise<any> {
     const query = `
     SELECT * FROM campeonatos_clubes 
@@ -64,7 +61,6 @@ export class CampeonatoRepository {
     return rows[0];
   }
 
-  // Cria o registro na tabela intermediária
   async inscreverClube(id_campeonato: string, id_clube: string): Promise<any> {
     const query = `
     INSERT INTO campeonatos_clubes (id_campeonato, id_clube)

@@ -1,24 +1,40 @@
-import { Router } from 'express';
-import { AtletaController } from '../controllers/AtletaController.js';
-import { ClubeController } from '../controllers/ClubeController.js';
-import { CampeonatoController } from '../controllers/CampeonatoController.js';
-import { PartidaController } from '../controllers/PartidaController.js';
-import { EventoController } from '../controllers/EventoController.js';
+import { Router } from "express";
 
-import { validationMiddleware } from '../middlewares/validation.middleware.js';
-import { CreateClubeDTO } from '../dtos/CreateClubeDTO.js';
-import { CreateCampeonatoDTO } from '../dtos/CreateCampeonatoDTO.js';
-import { CreateAtletaDTO } from '../dtos/CreateAtletaDTO.js';
-import { CreatePartidaDTO } from '../dtos/CreatePartidaDTO.js';
-import { CreateEventoSumulaDTO } from '../dtos/CreateEventoSumulaDTO.js';
+import { validationMiddleware } from "../middlewares/validationMiddleware.js";
+
+import { AtletaController } from "../controllers/AtletaController.js";
+import { ClubeController } from "../controllers/ClubeController.js";
+import { CampeonatoController } from "../controllers/CampeonatoController.js";
+import { PartidaController } from "../controllers/PartidaController.js";
+import { EventoController } from "../controllers/EventoController.js";
+
+import { AtletaService } from "../services/AtletaService.js";
+import { ClubeService } from "../services/ClubeService.js";
+import { CampeonatoService } from "../services/CampeonatoService.js";
+import { PartidaService } from "../services/PartidaService.js";
+import { EventoService } from "../services/EventoService.js";
+
+import { AtletaRepository } from "../repositories/AtletaRepository.js";
+import { ClubeRepository } from "../repositories/ClubeRepository.js";
+import { CampeonatoRepository } from "../repositories/CampeonatoRepository.js";
+import { EventoRepository } from "../repositories/EventoRepository.js";
+import { PartidaRepository } from "../repositories/PartidaRepository.js";
+
+import { CreateClubeDTO } from "../dtos/CreateClubeDTO.js";
+import { CreateCampeonatoDTO } from "../dtos/CreateCampeonatoDTO.js";
+import { CreateAtletaDTO } from "../dtos/CreateAtletaDTO.js";
+import { CreatePartidaDTO } from "../dtos/CreatePartidaDTO.js";
+import { CreateEventoSumulaDTO } from "../dtos/CreateEventoSumulaDTO.js";
+
+
 
 const routes = Router();
 
-const atletaController = new AtletaController();
-const clubeController = new ClubeController();
-const campeonatoController = new CampeonatoController();
-const partidaController = new PartidaController();
-const eventoController = new EventoController();
+const atletaController = new AtletaController(new AtletaService(new AtletaRepository()));
+const clubeController = new ClubeController(new ClubeService(new ClubeRepository()));
+const campeonatoController = new CampeonatoController(new CampeonatoService(new CampeonatoRepository()));
+const partidaController = new PartidaController(new PartidaService(new PartidaRepository(), new EventoRepository()));
+const eventoController = new EventoController(new EventoService(new PartidaRepository(), new EventoRepository()));
 
 // ROTAS DE CLUBES
 routes.post('/clubes', validationMiddleware(CreateClubeDTO), (req, res, next) => clubeController.store(req, res, next));
@@ -49,7 +65,7 @@ routes.get('/partidas/:id', (req, res, next) => partidaController.show(req, res,
 routes.patch('/partidas/:id/status', (req, res, next) => partidaController.updateStatus(req, res, next));
 
 // ROTAS DA SÚMULA E EVENTOS
-routes.get('/partidas/:id/sumula', (req, res, next) => partidaController.showSumula(req, res, next));
 routes.post('/eventos', validationMiddleware(CreateEventoSumulaDTO), (req, res, next) => eventoController.store(req, res, next));
+routes.get('/partidas/:id/sumula', (req, res, next) => partidaController.showSumula(req, res, next));
 
 export default routes;
