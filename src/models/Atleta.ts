@@ -22,7 +22,7 @@ export class Atleta {
     private constructor(private readonly props: propsAtleta) { }
     // O método estático "construir" é responsável por validar os dados e criar uma nova instância de Atleta
     public static construir(nome: string, cpf: string, data_nasc: string | Date, tipo_sanguineo: string, id_clube: string, rg?: string, peso?: number, altura?: number, status?: string) {
-        if (!nome || !cpf || !data_nasc || !tipo_sanguineo || !id_clube) { 
+        if (!nome || !cpf || !data_nasc || !tipo_sanguineo || !id_clube) {
             throw new BadRequestError("Os atributos nome, cpf, data de nascimento, tipo sanguíneo e id do clube não podem ser vazios");
         }
         const dataConvertida = typeof data_nasc === 'string' ? new Date(data_nasc) : data_nasc;

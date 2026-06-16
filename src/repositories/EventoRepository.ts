@@ -19,7 +19,7 @@ export class EventoRepository {
       evento.minuto_evento || null,
       evento.timestamp_offline || new Date()
     ];
-    
+
     const { rows } = await pool.query(query, values);
     return rows[0];
   }
@@ -34,7 +34,7 @@ export class EventoRepository {
       WHERE e.id_partida = $1
       ORDER BY e.minuto_evento ASC;
     `;
-    
+
     const { rows } = await pool.query(query, [id_partida]);
     return rows;
   }

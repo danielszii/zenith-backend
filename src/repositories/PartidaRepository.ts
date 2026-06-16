@@ -2,7 +2,7 @@ import { pool } from '../config/database.js';
 import { Partida } from '../models/Partida.js'; // Caso tenha a interface separada
 
 export class PartidaRepository {
-  async create(partida: Partida){
+  async create(partida: Partida) {
     const query = `
       INSERT INTO partidas (id_partida, id_campeonato, id_mandante, id_visitante, data, hora, local, status)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
@@ -56,14 +56,14 @@ export class PartidaRepository {
 
   async incrementarGolMandante(id_partida: string): Promise<void> {
     await pool.query(
-      'UPDATE partidas SET gols_mandante = gols_mandante + 1 WHERE id_partida = $1', 
+      'UPDATE partidas SET gols_mandante = gols_mandante + 1 WHERE id_partida = $1',
       [id_partida]
     );
   }
 
   async incrementarGolVisitante(id_partida: string): Promise<void> {
     await pool.query(
-      'UPDATE partidas SET gols_visitante = gols_visitante + 1 WHERE id_partida = $1', 
+      'UPDATE partidas SET gols_visitante = gols_visitante + 1 WHERE id_partida = $1',
       [id_partida]
     );
   }

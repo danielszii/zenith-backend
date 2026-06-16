@@ -13,10 +13,10 @@ export class PartidaService {
       throw new BusinessRuleError('O clube mandante não pode ser igual ao clube visitante.');
     }
     // Instancia o Model usando o método construir antes de enviar ao repositório
-    const novaPartida = Partida.construir(String(dados.id_campeonato), String(dados.id_mandante),  String(dados.id_visitante), dados.local, new Date(dados.data), dados.hora, dados.status);
+    const novaPartida = Partida.construir(String(dados.id_campeonato), String(dados.id_mandante), String(dados.id_visitante), dados.local, new Date(dados.data), dados.hora, dados.status);
     return await partidaRepository.create(novaPartida);
   }
-  
+
   async listarPartidas() {
     return await partidaRepository.findAll();
   }

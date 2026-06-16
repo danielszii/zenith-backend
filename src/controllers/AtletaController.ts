@@ -5,16 +5,16 @@ import { NotFoundError } from '../errors/AppError.js';
 const atletaService = new AtletaService();
 
 export class AtletaController {
-   //Método para criar um novo registro (POST)
+  //Método para criar um novo registro (POST)
   async store(req: Request, res: Response, next: NextFunction) {
     try {
       // 2. Chama o repositório para executar o SQL
       const novoAtleta = await atletaService.registrarAtleta(req.body);
 
       // 3. Retorna o status 201 (Created) e o objeto criado
-        return res.status(201).json(novoAtleta);
+      return res.status(201).json(novoAtleta);
     } catch (error) {
-        next(error); // Passa o erro para o Middleware Global
+      next(error); // Passa o erro para o Middleware Global
     }
   }
 
@@ -23,7 +23,7 @@ export class AtletaController {
       const atletas = await atletaService.listarAtletas();
       return res.json(atletas);
     } catch (error) {
-        next(error); // Passa o erro para o Middleware Global
+      next(error); // Passa o erro para o Middleware Global
     }
   }
 
@@ -36,7 +36,7 @@ export class AtletaController {
       // } 
       return res.json(atleta);
     } catch (error) {
-        next(error);
+      next(error);
     }
   }
 
@@ -45,8 +45,8 @@ export class AtletaController {
       const { id } = req.params;
       const atualizado = await atletaService.atualizarAtleta(String(id), req.body);
       return res.json(atualizado)
-    } catch (error) { 
-        next(error);
+    } catch (error) {
+      next(error);
     }
   }
   async delete(req: Request, res: Response, next: NextFunction) {
@@ -55,8 +55,8 @@ export class AtletaController {
       await atletaService.deletarAtleta(String(id));
       return res.status(204).send(); // 204 significa Sucesso sem conteúdo de retorno
 
-    } catch (error) { 
-      next(error); 
+    } catch (error) {
+      next(error);
     }
   }
 }

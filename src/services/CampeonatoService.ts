@@ -18,7 +18,7 @@ export class CampeonatoService {
   async atualizarCampeonato(id: string, dados: Partial<CreateCampeonatoDTO>) {
     return await campeonatoRepository.update(id, dados);
   }
-  
+
   async deletarCampeonato(id: string) {
     return await campeonatoRepository.delete(id);
   }
@@ -39,7 +39,7 @@ export class CampeonatoService {
 
     // 2. REGRA DE NEGÓCIO: Verifica se o clube já está participando desse campeonato
     const inscricaoExistente = await campeonatoRepository.findInscricao(id_campeonato, id_clube);
-    
+
     if (inscricaoExistente) {
       throw new BusinessRuleError('Este clube já está inscrito neste campeonato.');
     }

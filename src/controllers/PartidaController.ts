@@ -27,7 +27,7 @@ export class PartidaController {
   async updateStatus(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const { status } = req.body; 
+      const { status } = req.body;
 
       if (!['agendado', 'em_andamento', 'encerrado', 'cancelado'].includes(status)) {
         throw new BadRequestError('Status inválido fornecido. Os valores aceitos são: agendado, em_andamento, encerrado ou cancelado.');

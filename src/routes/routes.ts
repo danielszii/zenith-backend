@@ -7,7 +7,7 @@ import { EventoController } from '../controllers/EventoController.js';
 
 import { validationMiddleware } from '../middlewares/validation.middleware.js';
 import { CreateClubeDTO } from '../dtos/CreateClubeDTO.js';
-import { CreateCampeonatoDTO } from '../dtos/CreateCampeonatoDTO.js'; 
+import { CreateCampeonatoDTO } from '../dtos/CreateCampeonatoDTO.js';
 import { CreateAtletaDTO } from '../dtos/CreateAtletaDTO.js';
 import { CreatePartidaDTO } from '../dtos/CreatePartidaDTO.js';
 import { CreateEventoSumulaDTO } from '../dtos/CreateEventoSumulaDTO.js';

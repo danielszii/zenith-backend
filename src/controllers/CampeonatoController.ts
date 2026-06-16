@@ -5,7 +5,7 @@ const campeonatoService = new CampeonatoService();
 
 export class CampeonatoController {
     async store(req: Request, res: Response, next: NextFunction) {
-        try { 
+        try {
             const novoCampeonato = await campeonatoService.criarCampeonato(req.body);
             return res.status(201).json(novoCampeonato);
         } catch (error) {
@@ -49,18 +49,18 @@ export class CampeonatoController {
         } catch (error) {
             next(error);
         }
-    } 
+    }
 
     async inscreverClube(req: Request, res: Response, next: NextFunction) {
-    try {
-        const { id_campeonato, id_clube } = req.body;
+        try {
+            const { id_campeonato, id_clube } = req.body;
 
-        // Chama o service que vai rodar as travas de domínio e persistir no banco intermediário
-        const novaInscricao = await campeonatoService.inscreverClube(String(id_campeonato), String(id_clube));
-        return res.status(201).json(novaInscricao);
-        
-    } catch (error) {
-        next(error); // Encaminha qualquer estouro de regra direto pro Middleware Global
+            // Chama o service que vai rodar as travas de domínio e persistir no banco intermediário
+            const novaInscricao = await campeonatoService.inscreverClube(String(id_campeonato), String(id_clube));
+            return res.status(201).json(novaInscricao);
+
+        } catch (error) {
+            next(error); // Encaminha qualquer estouro de regra direto pro Middleware Global
+        }
     }
-}
 }

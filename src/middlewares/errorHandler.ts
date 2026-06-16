@@ -7,7 +7,7 @@ export const errorHandler: ErrorRequestHandler = (
   res: Response,
   next: NextFunction
 ) => {
-    // Se o erro foi disparado intencionalmente
+  // Se o erro foi disparado intencionalmente
   if (error instanceof AppError) {
     res.status(error.statusCode).json({
       status: 'error',

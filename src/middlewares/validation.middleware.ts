@@ -13,10 +13,10 @@ export function validationMiddleware(type: any) {
 
     if (errors.length > 0) {
       // Se houver erros, mapeia e devolve direto para o frontend
-      const messages = errors.map((error: ValidationError) => 
+      const messages = errors.map((error: ValidationError) =>
         Object.values(error.constraints || {})
       ).flat().join(', ');;
-      
+
       return next(new BadRequestError(messages));
     }
 

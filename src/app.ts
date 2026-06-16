@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import express, { type Request as req, type Response as res} from 'express';
+import express, { type Request as req, type Response as res } from 'express';
 import { testConnection } from './config/database.js';
 import routes from './routes/routes.js';
 import { errorHandler } from './middlewares/errorHandler.js';
@@ -13,7 +13,7 @@ app.use(errorHandler);
 
 const startServer = async () => {
     // Tenta conectar ao banco antes de abrir o servidor
-    await testConnection(); 
+    await testConnection();
 
     app.listen(3000, () => {
         console.log('Zenith Server is running on port 3000');

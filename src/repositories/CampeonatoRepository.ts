@@ -75,3 +75,4 @@ export class CampeonatoRepository {
     return rows[0];
   }
 }
+

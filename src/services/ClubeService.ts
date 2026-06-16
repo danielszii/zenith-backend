@@ -15,12 +15,12 @@ export class ClubeService {
         return await clubeRepository.findAll();
     }
 
-    async atualizarClube(id: string, dados: CreateClubeDTO) { 
+    async atualizarClube(id: string, dados: CreateClubeDTO) {
         return await clubeRepository.update(id, dados);
     }
 
-    async deletarClube(id: string) { 
-        return await clubeRepository.delete(id); 
+    async deletarClube(id: string) {
+        return await clubeRepository.delete(id);
     }
 
     async buscarPorId(id: string) {

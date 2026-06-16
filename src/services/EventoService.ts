@@ -39,11 +39,11 @@ export class EventoService {
     if (tipoEvento === 'gol') {
       if (String(dados.id_clube) === String(partida.id_mandante)) {
         await partidaRepository.incrementarGolMandante(dados.id_partida);
-      } 
+      }
       else if (String(dados.id_clube) === String(partida.id_visitante)) {
         await partidaRepository.incrementarGolVisitante(dados.id_partida);
       }
-    } 
+    }
     return novoEvento;
   }
 
