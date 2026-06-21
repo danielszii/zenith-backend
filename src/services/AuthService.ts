@@ -6,7 +6,7 @@ import { NotFoundError } from '../errors/NotFoundError.js';
 import { CreateUsuarioDTO } from '../dtos/CreateUsuarioDTO.js';
 import { Usuario } from '../models/Usuario.js';
 
-const JWT_SECRET = 'sua_chave_secreta_e_segura_do_zenith';
+const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret_key_local';
 
 export class AuthService {
   public constructor(private readonly usuarioRepository: UsuarioRepository) {}
