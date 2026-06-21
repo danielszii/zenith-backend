@@ -9,7 +9,7 @@ export class CampeonatoService {
   public constructor(private readonly campeonatoRepository: CampeonatoRepository) { }
 
   async criarCampeonato(dados: CreateCampeonatoDTO) {
-    const campeonato = Campeonato.construir(dados.nome, new Date(dados.data_inicio), new Date(dados.data_fim), dados.modalidade); // Validação básica usando o construtor da entidade
+    const campeonato = Campeonato.construir(dados.nome, new Date(dados.data_inicio), new Date(dados.data_fim), dados.modalidade, dados.status, dados.formato, dados.criterios_desempate, dados.categoria  ); // Validação básica usando o construtor da entidade
     return await this.campeonatoRepository.create(campeonato);
   }
 
@@ -45,5 +45,11 @@ export class CampeonatoService {
     }
 
     return await this.campeonatoRepository.inscreverClube(id_campeonato, id_clube);
+  }
+
+  async gerarTabela(id_campeonato: string) {
+    // Valida se o campeonato existe (aproveita a lógica que você já tem)
+    await this.buscarPorId(id_campeonato);
+    return await this.campeonatoRepository.obterTabelaClassificacao(id_campeonato);
   }
 }

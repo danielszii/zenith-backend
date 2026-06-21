@@ -17,6 +17,10 @@ export class CreateCampeonatoDTO {
   @IsNotEmpty({ message: 'A data de término é obrigatória.' })
   data_fim: string;
 
+  @IsString()  
+  @IsIn(['planejado', 'em andamento', 'finalizado'], { message: 'Status inválido. Os valores permitidos são: planejado, em andamento, finalizado.' })
+  status: string;
+
   @IsOptional()
   @IsString()
   criterios_desempate?: string;

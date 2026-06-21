@@ -60,6 +60,7 @@ routes.put('/campeonatos/:id', (req, res, next) => campeonatoController.update(r
 routes.delete('/campeonatos/:id', (req, res, next) => campeonatoController.delete(req, res, next));
 routes.get('/campeonatos/:id', (req, res, next) => campeonatoController.show(req, res, next));
 routes.post('/campeonatos/inscricoes', (req, res, next) => campeonatoController.inscreverClube(req, res, next));
+routes.get('/campeonatos/:id/tabela', (req, res, next) => campeonatoController.showTabela(req, res, next));
 
 // ROTAS DE ATLETAS
 routes.post('/atletas', validationMiddleware(CreateAtletaDTO), (req, res, next) => atletaController.store(req, res, next));

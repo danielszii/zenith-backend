@@ -70,5 +70,60 @@ export class CampeonatoRepository {
     const { rows } = await pool.query(query, [id_campeonato, id_clube]);
     return rows[0];
   }
+
+  async obterTabelaClassificacao(id_campeonato: string) {
+    const query = `
+      WITH times_campeonato AS (
+        SELECT cc.id_campeonato, cc.id_clube, c.nome
+        FROM campeonatos_clubes cc
+        JOIN clubes c ON cc.id_clube = c.id_clube
+        WHERE cc.id_campeonato = $1
+      ),
+      estatisticas AS (
+        SELECT 
+          t.id_clube,
+          t.nome AS clube,
+          COUNT(p.id_partida) AS jogos,
+          SUM(CASE 
+            WHEN p.id_mandante = t.id_clube AND p.gols_mandante > p.gols_visitante THEN 3
+            WHEN p.id_visitante = t.id_clube AND p.gols_visitante > p.gols_mandante THEN 3
+            WHEN p.gols_mandante = p.gols_visitante AND p.id_partida IS NOT NULL THEN 1
+            ELSE 0 
+          END) AS pontos,
+          SUM(CASE WHEN p.id_mandante = t.id_clube AND p.gols_mandante > p.gols_visitante THEN 1 
+                   WHEN p.id_visitante = t.id_clube AND p.gols_visitante > p.gols_mandante THEN 1 ELSE 0 END) AS vitorias,
+          SUM(CASE WHEN p.gols_mandante = p.gols_visitante AND p.id_partida IS NOT NULL THEN 1 ELSE 0 END) AS empates,
+          SUM(CASE WHEN p.id_mandante = t.id_clube AND p.gols_mandante < p.gols_visitante THEN 1 
+                   WHEN p.id_visitante = t.id_clube AND p.gols_visitante < p.gols_mandante THEN 1 ELSE 0 END) AS derrotas,
+          SUM(CASE WHEN p.id_mandante = t.id_clube THEN p.gols_mandante 
+                   WHEN p.id_visitante = t.id_clube THEN p.gols_visitante ELSE 0 END) AS gols_pro,
+          SUM(CASE WHEN p.id_mandante = t.id_clube THEN p.gols_visitante 
+                   WHEN p.id_visitante = t.id_clube THEN p.gols_mandante ELSE 0 END) AS gols_contra
+        FROM times_campeonato t
+        LEFT JOIN partidas p 
+          ON (p.id_mandante = t.id_clube OR p.id_visitante = t.id_clube)
+          AND p.id_campeonato = t.id_campeonato
+          AND p.status = 'encerrado'
+        GROUP BY t.id_clube, t.nome
+      )
+      SELECT 
+        id_clube,
+        clube,
+        COALESCE(jogos, 0)::int AS jogos,
+        COALESCE(pontos, 0)::int AS pontos,
+        COALESCE(vitorias, 0)::int AS vitorias,
+        COALESCE(empates, 0)::int AS empates,
+        COALESCE(derrotas, 0)::int AS derrotas,
+        COALESCE(gols_pro, 0)::int AS gols_pro,
+        COALESCE(gols_contra, 0)::int AS gols_contra,
+        (COALESCE(gols_pro, 0) - COALESCE(gols_contra, 0))::int AS saldo_gols
+      FROM estatisticas
+      ORDER BY pontos DESC, saldo_gols DESC, vitorias DESC, gols_pro DESC;
+    `;
+
+    const { rows } = await pool.query(query, [id_campeonato]);
+    return rows;
+  }
+
 }
 

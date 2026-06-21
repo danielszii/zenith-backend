@@ -62,4 +62,14 @@ export class CampeonatoController {
             next(error); 
         }
     }
+
+    async showTabela(req: Request, res: Response, next: NextFunction) {
+      try {
+          const { id } = req.params;
+          const tabela = await this.CampeonatoService.gerarTabela(String(id));
+          return res.json(tabela);
+      } catch (error) {
+          next(error);
+      }
+  }
 }
