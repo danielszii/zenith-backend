@@ -3,7 +3,7 @@ import { BadRequestError } from '../errors/BadRequestError.js';
 
 
 export type propsClube = {
-    id_clube?: string;
+    id_clube: string;
     nome: string;
     brasao?: string;
     cores_oficiais?: string;

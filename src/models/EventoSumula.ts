@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto';
 import { BadRequestError } from '../errors/BadRequestError.js';
 
 export type propsEventoSumula = {
-    id_evento?: string;
+    id_evento: string;
     id_partida: string;
     id_atleta: string; 
     id_clube: string;
@@ -13,7 +13,7 @@ export type propsEventoSumula = {
 
 export class EventoSumula {
 
-    private constructor(private readonly props: propsEventoSumula) { }
+    private constructor(private readonly props: propsEventoSumula) {}
 
     public static construir(id_partida: string, id_atleta: string, id_clube: string, tipo_evento: 'GOL' | 'CARTAO_AMARELO' | 'CARTAO_VERMELHO', minuto_evento?: number | null, timestamp_offline?: string | Date) {
 

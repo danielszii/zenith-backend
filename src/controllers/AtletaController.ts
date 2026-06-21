@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { AtletaService } from '../services/AtletaService.js';
-import { NotFoundError } from '../errors/NotFoundError.js';
+
 
 export class AtletaController {
 

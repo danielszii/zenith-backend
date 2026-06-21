@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto';
 import { BadRequestError } from '../errors/BadRequestError.js';
 
 export type propsPartida = {
-    id_partida?: string;
+    id_partida: string;
     id_campeonato: string; 
     id_mandante: string; 
     id_visitante: string; 

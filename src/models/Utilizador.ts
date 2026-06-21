@@ -3,7 +3,7 @@ import { BadRequestError } from '../errors/BadRequestError.js';
 
 
 export type propsUtilizador = {
-    id_utilizador?: string;
+    id_utilizador: string;
     nome: string;
     email: string;
     senha?: string; 

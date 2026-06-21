@@ -11,6 +11,6 @@ export class EventoController {
       return res.status(201).json(novoEvento);
     } catch (error) {
       next(error);
-    }
+    } 
   }
 }
