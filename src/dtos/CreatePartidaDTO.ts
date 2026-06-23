@@ -1,7 +1,14 @@
-import { IsInt, IsNotEmpty, IsDateString, IsString, Matches, IsOptional } from 'class-validator';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsDateString,
+  IsString,
+  Matches,
+  IsOptional,
+} from "class-validator";
 
 export class CreatePartidaDTO {
-  @IsString({ message: 'O id do campeonato deve ser uma string.' })
+  @IsString({ message: "O id do campeonato deve ser uma string." })
   @IsNotEmpty()
   id_campeonato: string;
 
@@ -13,13 +20,15 @@ export class CreatePartidaDTO {
   @IsNotEmpty()
   id_visitante: string;
 
-  @IsDateString({}, { message: 'A data deve estar no formato AAAA-MM-DD.' })
+  @IsDateString({}, { message: "A data deve estar no formato AAAA-MM-DD." })
   @IsNotEmpty()
   data: string;
 
   @IsString()
   @IsNotEmpty()
-  @Matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, { message: 'A hora deve estar no formato HH:MM.' })
+  @Matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, {
+    message: "A hora deve estar no formato HH:MM.",
+  })
   hora: string;
 
   @IsNotEmpty()
@@ -28,5 +37,5 @@ export class CreatePartidaDTO {
 
   @IsOptional()
   @IsString()
-  status?: 'agendado' | 'em_andamento' | 'encerrado' | 'cancelado';
+  status?: "agendado" | "em_andamento" | "encerrado" | "cancelado";
 }

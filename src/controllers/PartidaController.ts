@@ -1,10 +1,9 @@
-import { Request, Response, NextFunction } from 'express';
-import { PartidaService } from '../services/PartidaService.js';
-import { BadRequestError } from '../errors/BadRequestError.js';
+import { Request, Response, NextFunction } from "express";
+import { PartidaService } from "../services/PartidaService.js";
+import { BadRequestError } from "../errors/BadRequestError.js";
 
 export class PartidaController {
-
-  public constructor(private readonly PartidaService: PartidaService) { }
+  public constructor(private readonly PartidaService: PartidaService) {}
 
   async index(req: Request, res: Response, next: NextFunction) {
     try {
@@ -30,11 +29,18 @@ export class PartidaController {
       const { id } = req.params;
       const { status } = req.body;
 
-      if (!['agendado', 'em_andamento', 'encerrado', 'cancelado'].includes(status)) {
-        throw new BadRequestError('Status inválido fornecido. Os valores aceitos são: agendado, em_andamento, encerrado ou cancelado.');
+      if (
+        !["agendado", "em_andamento", "encerrado", "cancelado"].includes(status)
+      ) {
+        throw new BadRequestError(
+          "Status inválido fornecido. Os valores aceitos são: agendado, em_andamento, encerrado ou cancelado.",
+        );
       }
 
-      const partidaAtualizada = await this.PartidaService.alterarStatus(String(id), status);
+      const partidaAtualizada = await this.PartidaService.alterarStatus(
+        String(id),
+        status,
+      );
       return res.json(partidaAtualizada);
     } catch (error) {
       next(error);
@@ -54,6 +60,26 @@ export class PartidaController {
       const { id } = req.params;
       const sumula = await this.PartidaService.obterSumulaCompleta(String(id));
       return res.json(sumula);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async validarElenco(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = String(req.params.id);
+
+      const id_clube = String(req.body.id_clube);
+
+      const ids_atletas = req.body.ids_atletas as string[];
+
+      const resultado = await this.PartidaService.validarEscalacao(
+        id,
+        id_clube,
+        ids_atletas,
+      );
+
+      return res.status(200).json(resultado);
     } catch (error) {
       next(error);
     }

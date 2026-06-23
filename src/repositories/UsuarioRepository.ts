@@ -1,5 +1,5 @@
-import { pool } from '../config/database.js';
-import { Usuario } from '../models/Usuario.js';
+import { pool } from "../config/database.js";
+import { Usuario } from "../models/Usuario.js";
 
 export class UsuarioRepository {
   async create(usuario: Usuario) {
@@ -9,10 +9,10 @@ export class UsuarioRepository {
       RETURNING id_usuario, nome, email, role, created_at;`;
     const values = [
       usuario.id_usuario,
-      usuario.nome, 
-      usuario.email, 
-      usuario.senha, 
-      usuario.role
+      usuario.nome,
+      usuario.email,
+      usuario.senha,
+      usuario.role,
     ];
 
     const { rows } = await pool.query(query, values);
@@ -20,7 +20,7 @@ export class UsuarioRepository {
   }
 
   async findByEmail(email: string) {
-    const query = 'SELECT * FROM usuarios WHERE email = $1;';
+    const query = "SELECT * FROM usuarios WHERE email = $1;";
     const { rows } = await pool.query(query, [email]);
     return rows.length ? rows[0] : null;
   }

@@ -1,10 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
-import { AtletaService } from '../services/AtletaService.js';
-
+import { Request, Response, NextFunction } from "express";
+import { AtletaService } from "../services/AtletaService.js";
 
 export class AtletaController {
-
-  public constructor(private readonly AtletaService: AtletaService) { }
+  public constructor(private readonly AtletaService: AtletaService) {}
   async store(req: Request, res: Response, next: NextFunction) {
     try {
       // 2. Chama o repositório para executar o SQL
@@ -22,7 +20,7 @@ export class AtletaController {
       const atletas = await this.AtletaService.listarAtletas();
       return res.json(atletas);
     } catch (error) {
-      next(error); 
+      next(error);
     }
   }
 
@@ -39,8 +37,11 @@ export class AtletaController {
   async update(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const atualizado = await this.AtletaService.atualizarAtleta(String(id), req.body);
-      return res.json(atualizado)
+      const atualizado = await this.AtletaService.atualizarAtleta(
+        String(id),
+        req.body,
+      );
+      return res.json(atualizado);
     } catch (error) {
       next(error);
     }
@@ -49,8 +50,20 @@ export class AtletaController {
     try {
       const { id } = req.params;
       await this.AtletaService.deletarAtleta(String(id));
-      return res.status(204).send(); 
+      return res.status(204).send();
+    } catch (error) {
+      next(error);
+    }
+  }
 
+  async obterEstatisticas(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const estatisticas = await this.AtletaService.obterEstatisticasCompleta(
+        String(id),
+      );
+
+      return res.status(200).json(estatisticas);
     } catch (error) {
       next(error);
     }

@@ -1,13 +1,13 @@
-import { IsString, IsNotEmpty, IsOptional, Length } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, Length } from "class-validator";
 
 export class CreateClubeDTO {
   @IsString()
-  @IsNotEmpty({ message: 'O nome do clube é obrigatório.' })
-  nome: string; 
+  @IsNotEmpty({ message: "O nome do clube é obrigatório." })
+  nome: string;
 
   @IsOptional()
   @IsString()
-  brasao?: string; 
+  brasao?: string;
 
   @IsOptional()
   @IsString()
@@ -19,6 +19,6 @@ export class CreateClubeDTO {
 
   @IsOptional()
   @IsString()
-  @Length(14, 18, { message: 'O CNPJ deve ter um formato válido.' })
+  @Length(14, 18, { message: "O CNPJ deve ter um formato válido." })
   cnpj?: string;
 }

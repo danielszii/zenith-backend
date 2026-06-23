@@ -68,12 +68,14 @@ routes.get('/atletas', (req, res, next) => atletaController.index(req, res, next
 routes.put('/atletas/:id', (req, res, next) => atletaController.update(req, res, next));
 routes.delete('/atletas/:id', (req, res, next) => atletaController.delete(req, res, next));
 routes.get('/atletas/:id', (req, res, next) => atletaController.show(req, res, next));
+routes.get('/atletas/:id/estatisticas', (req, res, next) => atletaController.obterEstatisticas(req, res, next));
 
 // ROTAS DE PARTIDAS
 routes.post('/partidas', validationMiddleware(CreatePartidaDTO), (req, res, next) => partidaController.store(req, res, next));
 routes.get('/partidas', (req, res, next) => partidaController.index(req, res, next));
 routes.get('/partidas/:id', (req, res, next) => partidaController.show(req, res, next));
 routes.patch('/partidas/:id/status', (req, res, next) => partidaController.updateStatus(req, res, next));
+routes.post('/partidas/:id/validar-elenco', (req, res, next) => partidaController.validarElenco(req, res, next));
 
 // ROTAS DA SÚMULA E EVENTOS
 routes.post('/eventos', authMiddleware, roleMiddleware(['admin', 'mesario']), validationMiddleware(CreateEventoSumulaDTO), (req, res, next) => eventoController.store(req, res, next));

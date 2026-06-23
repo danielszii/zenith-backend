@@ -1,4 +1,4 @@
-import { AppError } from './AppError.js';
+import { AppError } from "./AppError.js";
 
 export class ConflictError extends AppError {
   constructor(message: string) {

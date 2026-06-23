@@ -1,5 +1,5 @@
-import { pool } from '../config/database.js';
-import { Partida } from '../models/Partida.js'; 
+import { pool } from "../config/database.js";
+import { Partida } from "../models/Partida.js";
 
 export class PartidaRepository {
   async create(partida: Partida) {
@@ -15,20 +15,20 @@ export class PartidaRepository {
       partida.data,
       partida.hora,
       partida.local,
-      partida.status || 'agendado'
+      partida.status || "agendado",
     ];
     const { rows } = await pool.query(query, values);
     return rows[0];
   }
 
   async findAll(): Promise<Partida[]> {
-    const query = 'SELECT * FROM partidas ORDER BY data DESC, hora DESC;';
+    const query = "SELECT * FROM partidas ORDER BY data DESC, hora DESC;";
     const { rows } = await pool.query(query);
     return rows;
   }
 
   async findById(id_partida: string): Promise<Partida | null> {
-    const query = 'SELECT * FROM partidas WHERE id_partida = $1;';
+    const query = "SELECT * FROM partidas WHERE id_partida = $1;";
     const { rows } = await pool.query(query, [id_partida]);
     return rows.length ? rows[0] : null;
   }
@@ -55,15 +55,41 @@ export class PartidaRepository {
 
   async incrementarGolMandante(id_partida: string): Promise<void> {
     await pool.query(
-      'UPDATE partidas SET gols_mandante = gols_mandante + 1 WHERE id_partida = $1',
-      [id_partida]
+      "UPDATE partidas SET gols_mandante = gols_mandante + 1 WHERE id_partida = $1",
+      [id_partida],
     );
   }
 
   async incrementarGolVisitante(id_partida: string): Promise<void> {
     await pool.query(
-      'UPDATE partidas SET gols_visitante = gols_visitante + 1 WHERE id_partida = $1',
-      [id_partida]
+      "UPDATE partidas SET gols_visitante = gols_visitante + 1 WHERE id_partida = $1",
+      [id_partida],
     );
+  }
+
+  async verificarSuspensao(
+    id_atleta: string,
+    id_campeonato: string,
+    data_partida_atual: string,
+  ): Promise<boolean> {
+    const query = `
+    SELECT e.tipo_evento 
+    FROM eventos_sumula e
+    JOIN partidas p ON e.id_partida = p.id_partida
+    WHERE e.id_atleta = $1 
+      AND p.id_campeonato = $2
+      AND p.data < $3
+      AND e.tipo_evento = 'CARTAO_VERMELHO'
+    ORDER BY p.data DESC, p.hora DESC
+    LIMIT 1;
+  `;
+
+    const { rows } = await pool.query(query, [
+      id_atleta,
+      id_campeonato,
+      data_partida_atual,
+    ]);
+
+    return rows.length > 0;
   }
 }

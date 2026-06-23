@@ -5,14 +5,12 @@ export function errorMiddleware(
   error: Error,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void {
-
   if (error instanceof AppError) {
-
     const response = {
       code: error.statusCode,
-      message: error.message
+      message: error.message,
     };
 
     res.status(error.statusCode).json(response);
@@ -23,7 +21,7 @@ export function errorMiddleware(
 
   const response = {
     code: 500,
-    message: "Internal server error"
+    message: "Internal server error",
   };
 
   res.status(500).json(response);
